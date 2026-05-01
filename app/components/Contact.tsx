@@ -46,7 +46,6 @@ export function Contact() {
               target="_blank"
               rel="noopener noreferrer"
               className="ghost"
-              download
             >
               <DownloadIcon /> Resume (PDF)
             </a>

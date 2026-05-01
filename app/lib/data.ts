@@ -7,7 +7,7 @@ export const SITE = {
   email: "kevin.pallado97@gmail.com",
   location: "Cagayan de Oro, Philippines",
   linkedin: "https://www.linkedin.com/in/kevin-pallado-94b251130",
-  resumePath: "/Kevin-Pallado-Resume.pdf",
+  resumePath: process.env.NEXT_PUBLIC_RESUME_URL ?? "",
   profileImage: "/assets/profile_picture.jpeg",
   url: "https://kevinpallado.dev",
 };
