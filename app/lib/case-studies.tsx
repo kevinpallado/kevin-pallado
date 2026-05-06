@@ -3,7 +3,7 @@ import type { CaseStudy } from "./data";
 export const CASE_STUDIES: CaseStudy[] = [
   {
     id: "quansys",
-    tag: "Featured · 2023 — Present",
+    tag: "Featured · 2020 — Present",
     status: "Live in production",
     name: "Quansys",
     subtitle:
@@ -12,15 +12,16 @@ export const CASE_STUDIES: CaseStudy[] = [
     href: "https://quansys.apexfuelstation.com/",
     summary: (
       <>
-        Built end-to-end for <strong>Apex Fuel Station</strong>, Quansys replaced paper ledgers and
-        spreadsheets with a single source of truth for purchase orders, receivables, and daily
-        reconciliation. Designed, built, deployed, and maintained solo — from database schema to UI
-        to ops.
+        Built end-to-end for <strong>Apex Fuel Station</strong>, Quansys
+        replaced paper ledgers and spreadsheets with a single source of truth
+        for purchase orders, receivables, and daily reconciliation. Designed,
+        built, deployed, and maintained solo — from database schema to UI to
+        ops.
       </>
     ),
     stats: [
       { v: "1", k: "Station run on it daily" },
-      { v: "5+", k: "Modules in one system" },
+      { v: "10+", k: "Modules in one system" },
       {
         v: (
           <>
@@ -37,9 +38,15 @@ export const CASE_STUDIES: CaseStudy[] = [
       "Role-based access for cashiers, station managers, accountants, and owner oversight.",
       "Daily sales reconciliation against pump readings, deliveries, and deposits.",
     ],
-    stack: ["Laravel", "PHP 8", "jQuery", "MariaDB", "Blade", "NGINX"],
+    stack: ["Laravel", "PHP 7", "jQuery", "MariaDB", "Blade", "NGINX"],
     stackAccent: ["Laravel", "MariaDB"],
-    ownership: ["Planning", "Architecture", "Development", "Deployment", "Ongoing support"],
+    ownership: [
+      "Planning",
+      "Architecture",
+      "Development",
+      "Deployment",
+      "Ongoing support",
+    ],
   },
   {
     id: "londonfoster",
@@ -53,9 +60,9 @@ export const CASE_STUDIES: CaseStudy[] = [
     summary: (
       <>
         Full ownership across multiple internal and public-facing systems for a{" "}
-        <strong>Miami-Dade brokerage</strong>. Translated real-estate workflows into a scalable MVC
-        + service-layer architecture and shipped tooling that reduced manual coordination across
-        agents and administrators.
+        <strong>Miami-Dade brokerage</strong>. Translated real-estate workflows
+        into a scalable MVC + service-layer architecture and shipped tooling
+        that reduced manual coordination across agents and administrators.
       </>
     ),
     stats: [
@@ -77,7 +84,14 @@ export const CASE_STUDIES: CaseStudy[] = [
       "System diagrams and long-term technical plans derived from real-estate workflow analysis.",
       "Ongoing enhancements, reliability, and security patches in production.",
     ],
-    stack: ["PHP (Laravel)", "MySQL", "JavaScript", "REST APIs", "AWS", "Linux/NGINX"],
+    stack: [
+      "PHP (Laravel)",
+      "MySQL",
+      "JavaScript",
+      "REST APIs",
+      "AWS",
+      "Linux/NGINX",
+    ],
     stackAccent: ["Laravel", "AWS"],
     ownership: [
       "Architecture",
