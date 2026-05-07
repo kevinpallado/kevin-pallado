@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CheckIcon, CopyIcon, DownloadIcon, LinkedinIcon, MailIcon } from "../lib/icons";
+import { CheckIcon, CopyIcon, DownloadIcon, GithubIcon, LinkedinIcon, MailIcon } from "../lib/icons";
 import { SITE } from "../lib/data";
 
 export function Contact() {
@@ -40,6 +40,9 @@ export function Contact() {
             </button>
             <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" className="ghost">
               <LinkedinIcon /> LinkedIn
+            </a>
+            <a href={SITE.github} target="_blank" rel="noopener noreferrer" className="ghost">
+              <GithubIcon /> GitHub
             </a>
             <a
               href={SITE.resumePath}
