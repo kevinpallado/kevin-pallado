@@ -48,14 +48,14 @@ export const metadata: Metadata = {
     url: SITE.url,
     title: `${SITE.name} — ${SITE.role}`,
     description:
-      "Fullstack developer building systems that run real businesses — LondonFoster, Quansys, Grantable, Fraia.",
+      "Building systems that run real businesses — LondonFoster, Quansys, Grantable, Fraia.",
     siteName: SITE.name,
   },
   twitter: {
     card: "summary_large_image",
     title: `${SITE.name} — ${SITE.role}`,
     description:
-      "Fullstack developer building systems that run real businesses. Seven years across PHP, Python, React and AWS.",
+      "Building systems that run real businesses. Seven years across PHP, Python, React and AWS.",
   },
   robots: {
     index: true,
@@ -105,7 +105,11 @@ const personJsonLd = {
   ],
 };
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const nonce = (await headers()).get("x-nonce") ?? undefined;
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>

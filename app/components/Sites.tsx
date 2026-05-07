@@ -15,10 +15,6 @@ export function Sites() {
               Public sites with the <em>dashboards behind them.</em>
             </h2>
           </div>
-          <div className="section-kicker">
-            Each one is a marketing page plus a private admin app — custom workflows, role-based
-            access, and Google Calendar sync for bookings and events.
-          </div>
         </div>
 
         <div className="sites-grid">

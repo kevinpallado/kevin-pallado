@@ -2,53 +2,6 @@ import type { CaseStudy } from "./data";
 
 export const CASE_STUDIES: CaseStudy[] = [
   {
-    id: "quansys",
-    tag: "Featured · 2020 — Present",
-    status: "Live in production",
-    name: "Quansys",
-    subtitle:
-      "Accounting & purchase-order platform running a full-service gasoline station in Cagayan de Oro.",
-    url: "quansys.apexfuelstation.com",
-    href: "https://quansys.apexfuelstation.com/",
-    summary: (
-      <>
-        Built end-to-end for <strong>Apex Fuel Station</strong>, Quansys
-        replaced paper ledgers and spreadsheets with a single source of truth
-        for purchase orders, receivables, and daily reconciliation. Designed,
-        built, deployed, and maintained solo — from database schema to UI to
-        ops.
-      </>
-    ),
-    stats: [
-      { v: "1", k: "Station run on it daily" },
-      { v: "10+", k: "Modules in one system" },
-      {
-        v: (
-          <>
-            24<em>/</em>7
-          </>
-        ),
-        k: "Production uptime",
-      },
-    ],
-    features: [
-      "Purchase-order lifecycle — from request and approval to supplier delivery and three-way match.",
-      "Double-entry accounting with chart of accounts, journal entries, and period-close reporting.",
-      "Receivables and payables aging, with credit-line tracking per customer and supplier.",
-      "Role-based access for cashiers, station managers, accountants, and owner oversight.",
-      "Daily sales reconciliation against pump readings, deliveries, and deposits.",
-    ],
-    stack: ["Laravel", "PHP 7", "jQuery", "MariaDB", "Blade", "NGINX"],
-    stackAccent: ["Laravel", "MariaDB"],
-    ownership: [
-      "Planning",
-      "Architecture",
-      "Development",
-      "Deployment",
-      "Ongoing support",
-    ],
-  },
-  {
     id: "londonfoster",
     tag: "Featured · 2021 — Present",
     status: "Live in production",
@@ -99,6 +52,90 @@ export const CASE_STUDIES: CaseStudy[] = [
       "Integrations",
       "Back-office tooling",
       "Production support",
+    ],
+  },
+  {
+    id: "grantable",
+    tag: "Contributor · 2024 — 2025",
+    status: "Live in production",
+    name: "Grantable",
+    subtitle:
+      "AI-powered grant writing and management platform for nonprofits.",
+    url: "grantable.co",
+    href: "https://grantable.co/",
+    summary: (
+      <>
+        Joined <strong>Grantable</strong> as a contributor, connecting Stripe
+        webhooks with idempotency to prevent duplicate event processing. Also
+        collaborated on integrating Claude and OpenAI APIs and contributed to
+        building new application features.
+      </>
+    ),
+    stats: [
+      { v: "Stripe", k: "webhook integration" },
+      { v: "2", k: "AI APIs integrated" },
+      { v: "10+", k: "months contributed" },
+    ],
+    features: [
+      "Connected Stripe webhooks to handle subscription events from the platform side.",
+      "Applied idempotency keys to prevent duplicate event processing.",
+      "Contributed to building new application features alongside the core team.",
+      "Claude API and OpenAI integration for core AI-powered grant writing features.",
+    ],
+    stack: ["Node.js", "Stripe", "Webhooks", "Claude API", "OpenAI"],
+    stackAccent: ["Stripe", "Claude API"],
+    ownership: [
+      "Contributor",
+      "Billing & payments",
+      "AI integrations",
+      "New features",
+    ],
+  },
+  {
+    id: "quansys",
+    tag: "Featured · 2020 — Present",
+    status: "Live in production",
+    name: "Quansys",
+    subtitle:
+      "Accounting & purchase-order platform running a full-service gasoline station in Cagayan de Oro.",
+    url: "quansys.apexfuelstation.com",
+    href: "https://quansys.apexfuelstation.com/",
+    summary: (
+      <>
+        Built end-to-end for <strong>Apex Fuel Station</strong>, Quansys
+        replaced paper ledgers and spreadsheets with a single source of truth
+        for purchase orders, receivables, and daily reconciliation. Designed,
+        built, deployed, and maintained solo — from database schema to UI to
+        ops.
+      </>
+    ),
+    stats: [
+      { v: "1", k: "Station run on it daily" },
+      { v: "10+", k: "Modules in one system" },
+      {
+        v: (
+          <>
+            24<em>/</em>7
+          </>
+        ),
+        k: "Production uptime",
+      },
+    ],
+    features: [
+      "Purchase-order lifecycle — from request and approval to supplier delivery and three-way match.",
+      "Double-entry accounting with chart of accounts, journal entries, and period-close reporting.",
+      "Receivables and payables aging, with credit-line tracking per customer and supplier.",
+      "Role-based access for cashiers, station managers, accountants, and owner oversight.",
+      "Daily sales reconciliation against pump readings, deliveries, and deposits.",
+    ],
+    stack: ["Laravel", "PHP 7", "jQuery", "MariaDB", "Blade", "NGINX"],
+    stackAccent: ["Laravel", "MariaDB"],
+    ownership: [
+      "Planning",
+      "Architecture",
+      "Development",
+      "Deployment",
+      "Ongoing support",
     ],
   },
 ];

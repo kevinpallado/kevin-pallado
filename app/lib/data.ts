@@ -76,7 +76,7 @@ export const SITES: SiteEntry[] = [
 export type CaseStat = { v: ReactNode; k: string };
 
 export type CaseStudy = {
-  id: "quansys" | "londonfoster";
+  id: "quansys" | "londonfoster" | "grantable";
   tag: string;
   status: string;
   name: string;
@@ -108,6 +108,7 @@ export const PREVIEW_SHOTS: Record<
     { src: "/assets/lf-04-sign.png", label: "Document signing" },
     { src: "/assets/lf-01-login.png", label: "Agent login" },
   ],
+  grantable: [],
 };
 
 export type Project = {
@@ -178,8 +179,8 @@ export type ExperienceEntry = {
 export const EXPERIENCE: ExperienceEntry[] = [
   {
     from: "Sept 2021",
-    to: "Present",
-    active: true,
+    to: "Mar 2026",
+    active: false,
     role: "Fullstack Developer",
     emph: "Lead",
     company: "LondonFoster Real Estate",
@@ -283,17 +284,7 @@ export const SKILLS: SkillGroup[] = [
   },
   {
     title: "Cloud & DevOps",
-    tags: [
-      "AWS Lambda",
-      "SNS",
-      "S3",
-      "EC2",
-      "DynamoDB",
-      "Amplify",
-      "Linux",
-      "NGINX",
-      "Apache",
-    ],
+    tags: ["AWS Lambda", "S3", "EC2", "Amplify", "Linux", "NGINX", "Apache"],
   },
   {
     title: "Payments & Integrations",
@@ -307,7 +298,7 @@ export const SKILLS: SkillGroup[] = [
       "MCP servers",
       "Subagents",
       "OpenAI / Claude APIs",
-      "RAG systems",
+      "Cursor",
     ],
   },
 ];

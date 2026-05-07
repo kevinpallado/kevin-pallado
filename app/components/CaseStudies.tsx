@@ -16,12 +16,8 @@ export function CaseStudies() {
               <span className="num">02</span>Featured Systems
             </div>
             <h2 className="section-title" style={{ marginTop: 12 }}>
-              Platforms I <em>designed, shipped</em> and still run.
+              Systems I <em>built, contributed to,</em> and shipped.
             </h2>
-          </div>
-          <div className="section-kicker">
-            Two systems running in production today — one for a Miami brokerage, one for a local
-            gasoline station back home. Both mine end-to-end.
           </div>
         </div>
 
@@ -98,25 +94,32 @@ function CaseCard({ c }: { c: CaseStudy }) {
           </h4>
           <div className="case-stack">
             {c.stack.map((s) => (
-              <span key={s} className={"chip" + (c.stackAccent.includes(s) ? " accent" : "")}>
+              <span
+                key={s}
+                className={
+                  "chip" + (c.stackAccent.includes(s) ? " accent" : "")
+                }
+              >
                 {s}
               </span>
             ))}
           </div>
 
-          <div className="case-preview" style={{ marginTop: 24 }}>
-            <div className="preview-chrome">
-              <div className="dots" aria-hidden="true">
-                <span />
-                <span />
-                <span />
+          {PREVIEW_SHOTS[c.id].length > 0 && (
+            <div className="case-preview" style={{ marginTop: 24 }}>
+              <div className="preview-chrome">
+                <div className="dots" aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+                <div className="url">
+                  <LockIcon /> {c.url}
+                </div>
               </div>
-              <div className="url">
-                <LockIcon /> {c.url}
-              </div>
+              <ScreenshotGallery shots={PREVIEW_SHOTS[c.id]} alt={c.name} />
             </div>
-            <ScreenshotGallery shots={PREVIEW_SHOTS[c.id]} alt={c.name} />
-          </div>
+          )}
         </div>
       </div>
     </article>
@@ -148,7 +151,11 @@ function ScreenshotGallery({
         <div className="preview-label">
           {String(i + 1).padStart(2, "0")} · {current.label}
         </div>
-        <div className="preview-dots" role="tablist" aria-label={`${alt} screenshots`}>
+        <div
+          className="preview-dots"
+          role="tablist"
+          aria-label={`${alt} screenshots`}
+        >
           {shots.map((s, j) => (
             <button
               key={s.src}

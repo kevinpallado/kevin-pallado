@@ -13,10 +13,6 @@ export function Experience() {
               Seven years <em>of shipping.</em>
             </h2>
           </div>
-          <div className="section-kicker">
-            Roles across real estate, AI, fintech, edtech and agricultural research — almost all of
-            them remote.
-          </div>
         </div>
 
         <div className="exp-list">

@@ -34,10 +34,6 @@ export function Nav() {
           ))}
         </div>
         <div className="nav-right">
-          <div className="nav-status">
-            <span className="dot" aria-hidden="true" />
-            Open to remote roles
-          </div>
           <a href="#contact" className="nav-cta">
             Get in touch
             <ArrowIcon />

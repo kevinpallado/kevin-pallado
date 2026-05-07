@@ -13,10 +13,6 @@ export function Skills() {
               Tools I <em>reach for.</em>
             </h2>
           </div>
-          <div className="section-kicker">
-            Stacks I&apos;ve shipped with in production — not things I&apos;ve read about on a
-            weekend.
-          </div>
         </div>
 
         <div className="skills-grid">

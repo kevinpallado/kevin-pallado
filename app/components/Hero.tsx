@@ -14,18 +14,10 @@ export function Hero() {
               <span className="line" aria-hidden="true" /> Available April 2026
             </div>
             <h1>
-              Fullstack developer building <em>systems</em> that
+              Building <em>systems</em> that
               <br />
               <span className="u">run real businesses.</span>
             </h1>
-            <p className="hero-sub">
-              I build and own internal platforms for{" "}
-              <strong>energy retail and real estate</strong> — POS & accounting
-              for a fuel station, transaction and back-office tooling for a
-              Miami brokerage. Seven years across{" "}
-              <strong>PHP, Python, React, and AWS</strong>. End-to-end,
-              production-owned.
-            </p>
 
             <div className="hero-cta-row">
               <a href="#work" className="btn-primary">

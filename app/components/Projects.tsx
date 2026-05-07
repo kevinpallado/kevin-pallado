@@ -13,10 +13,6 @@ export function Projects() {
               Other work <em>worth mentioning.</em>
             </h2>
           </div>
-          <div className="section-kicker">
-            Smaller slices of the last seven years — billing, RAG evaluation, legacy platforms,
-            embedded work.
-          </div>
         </div>
 
         <div className="projects-grid">
