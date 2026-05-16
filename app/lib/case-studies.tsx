@@ -3,7 +3,7 @@ import type { CaseStudy } from "./data";
 export const CASE_STUDIES: CaseStudy[] = [
   {
     id: "londonfoster",
-    tag: "Featured · 2021 — Present",
+    tag: "Featured · 2021 — May 2026",
     status: "Live in production",
     name: "LondonFoster",
     subtitle:
@@ -89,6 +89,47 @@ export const CASE_STUDIES: CaseStudy[] = [
       "Billing & payments",
       "AI integrations",
       "New features",
+    ],
+  },
+  {
+    id: "racketa",
+    tag: "Co-founder & Contributor · 2024 — Present",
+    status: "Live in production",
+    name: "Racketa",
+    subtitle:
+      "All-in-one racket sports management platform — clubs, tournaments, courts, training, merchandise, and coaching in one place.",
+    url: "racketa.app",
+    href: "https://racketa.app/",
+    summary: (
+      <>
+        Co-founded and contributed to <strong>Racketa</strong>, a platform built
+        for the racket sports community. Players can discover clubs and join
+        tournaments; club admins manage members, sessions, fees, and
+        announcements — all from a single product that covers every layer of the
+        sport from court booking to coach management.
+      </>
+    ),
+    stats: [
+      { v: "6+", k: "Core modules shipped" },
+      { v: "Multi", k: "Sports supported" },
+      { v: "Live", k: "Production app" },
+    ],
+    features: [
+      "Club management — members, roles, fees, announcements, and join requests.",
+      "Tournament discovery and registration with skill-level filtering and match types.",
+      "Court scheduling with open-queueing sessions and time-slot management.",
+      "Shuttlecock and merchandise tracking payable by members.",
+      "Member balance ledger with credits, charges, and payment history.",
+      "Session summaries and officer permission controls per club.",
+    ],
+    stack: ["SvelteKit", "Laravel", "PostgreSQL", "Tailwind CSS", "REST APIs"],
+    stackAccent: ["SvelteKit", "Laravel"],
+    ownership: [
+      "Co-founder",
+      "Contributor",
+      "Club & member features",
+      "Tournament flows",
+      "Admin tooling",
     ],
   },
   {

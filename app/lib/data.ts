@@ -77,7 +77,7 @@ export const SITES: SiteEntry[] = [
 export type CaseStat = { v: ReactNode; k: string };
 
 export type CaseStudy = {
-  id: "quansys" | "londonfoster" | "grantable";
+  id: "quansys" | "londonfoster" | "grantable" | "racketa";
   tag: string;
   status: string;
   name: string;
@@ -110,6 +110,13 @@ export const PREVIEW_SHOTS: Record<
     { src: "/assets/lf-01-login.png", label: "Agent login" },
   ],
   grantable: [],
+  racketa: [
+    { src: "/assets/raketa-01-home.jpeg", label: "Home — discover clubs & tournaments" },
+    { src: "/assets/raketa-02-tournaments.jpeg", label: "Find tournaments" },
+    { src: "/assets/raketa-03-clubs.jpeg", label: "Explore clubs" },
+    { src: "/assets/raketa-04-club-detail.jpeg", label: "Club detail & membership" },
+    { src: "/assets/raketa-05-admin.jpeg", label: "Club admin dashboard" },
+  ],
 };
 
 export type Project = {
