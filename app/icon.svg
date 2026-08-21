@@ -1,0 +1,25 @@
+<svg width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .plate { fill: #17181c; }
+    .mark { fill: #ffffff; }
+    .dot { fill: #3e8cc9; }
+    @media (prefers-color-scheme: dark) {
+      .plate { fill: #ffffff; }
+      .mark { fill: #17181c; }
+    }
+  </style>
+  <rect class="plate" width="180" height="180" rx="37" />
+  <!-- The brand lockup: tight "KP" with the accent period, as in the header. -->
+  <text
+    class="mark"
+    x="24"
+    y="92"
+    dominant-baseline="central"
+    font-family="Geist, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+    font-size="90"
+    font-weight="600"
+    letter-spacing="-7"
+  >KP</text>
+  <!-- Drawn rather than typed, so the dot keeps its shape in every renderer. -->
+  <circle class="dot" cx="140" cy="122" r="11" />
+</svg>
