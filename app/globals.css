@@ -1,0 +1,603 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --font-sans: var(--font-geist);
+}
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.19 0.015 260);
+  --muted-foreground: oklch(0.48 0.02 260);
+  --border: oklch(0.19 0.015 260 / 14%);
+  --primary: oklch(0.25 0.025 260);
+  --accent: oklch(0.62 0.12 245);
+  --surface: oklch(0.975 0.008 260);
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  background: var(--background);
+}
+/* ScrollSmoother wrapper. Fixed-position UI must live outside #smooth-wrapper,
+   because the content is moved with a transform. */
+#smooth-wrapper {
+  overflow: hidden;
+}
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), sans-serif;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.site-header,
+.site-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 28px 32px;
+}
+.site-header {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.site-header nav {
+  display: flex;
+  gap: 24px;
+  color: var(--muted-foreground);
+}
+.site-header nav a,
+.back-link,
+.text-link,
+.button-link,
+.cta-link,
+.site-footer a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+.site-header nav a:hover,
+.back-link:hover,
+.text-link:hover,
+.button-link:hover,
+.site-footer a:hover {
+  color: var(--accent);
+}
+.brand {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.08em;
+  text-transform: none;
+}
+.brand span {
+  color: var(--accent);
+}
+.section-shell {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+.hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 10vh;
+  padding-bottom: 60px;
+}
+.hero-word {
+  position: relative;
+  display: inline-block;
+}
+.hero-robot-track {
+  position: absolute;
+  /* The GIF's figure sits left-of-centre in its square canvas, so the box
+     overlaps the period slightly to keep the robot next to the word. */
+  left: calc(100% - 0.25em);
+  bottom: 0.03em;
+  display: block;
+  /* Explicit size: the img inherits Tailwind preflight's max-width:100%, which
+     would resolve against this shrink-to-fit box and collapse it to zero. */
+  width: 1.4em;
+  height: 1.4em;
+  pointer-events: none;
+}
+.hero-robot {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+}
+.hero-meta,
+.eyebrow,
+.section-marker {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted-foreground);
+}
+.status-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px oklch(0.68 0.12 73 / 20%);
+}
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+h1,
+h2 {
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  line-height: 0.98;
+}
+h1 em,
+h2 em {
+  font-family: inherit;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: -0.06em;
+}
+.hero h1 {
+  max-width: 1000px;
+  margin-top: 28px;
+  font-size: clamp(3rem, 7vw, 7.5rem);
+}
+.industry-rotator {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 30px;
+  font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+  letter-spacing: -0.03em;
+}
+.industry-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+.industry-track {
+  display: inline-grid;
+  overflow: hidden;
+  line-height: 1.4;
+}
+.industry-item {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translateY(0.5em);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+  white-space: nowrap;
+}
+.industry-item-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+.hero-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-top: auto;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.hero-footer span,
+.cta-bottom span {
+  color: var(--muted-foreground);
+}
+.opening-section {
+  padding-top: 18vh;
+  padding-bottom: 18vh;
+}
+.opening-section h2,
+.offer-section h2,
+.work-section h2,
+.skills-section h2,
+.cta-section h2 {
+  font-size: clamp(3rem, 6vw, 6.5rem);
+  margin-top: 28px;
+}
+.lede {
+  max-width: 620px;
+  margin-top: 38px;
+  font-size: clamp(1.25rem, 2.2vw, 2rem);
+  line-height: 1.3;
+  letter-spacing: -0.03em;
+  color: var(--muted-foreground);
+}
+.offer-section,
+.work-section,
+.skills-section {
+  padding-top: 12vh;
+  padding-bottom: 14vh;
+}
+.section-marker {
+  display: flex;
+  gap: 18px;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+.offer-list {
+  margin: 50px 0;
+}
+.offer-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 1fr;
+  gap: 24px;
+  align-items: baseline;
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+}
+.offer-row h3 {
+  font-size: 1.6rem;
+  letter-spacing: -0.04em;
+  font-weight: 500;
+}
+.offer-row p {
+  color: var(--muted-foreground);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.heading-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 24px;
+  margin-bottom: 80px;
+}
+.button-link {
+  border-bottom: 1px solid var(--foreground);
+  padding-bottom: 8px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+.project-image-wrap {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+  aspect-ratio: 16 / 10;
+}
+.project-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  /* transform is owned by GSAP (scroll parallax + hover zoom) — a CSS
+     transition on the same property would fight the scrub. */
+}
+.project-arrow {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--background);
+  font-size: 20px;
+  opacity: 0;
+  transform: translate(-8px, 8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.group:hover .project-arrow {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+.mini-projects {
+  margin-top: 60px;
+  border-top: 1px solid var(--border);
+}
+.mini-project {
+  display: grid;
+  grid-template-columns: 50px 1fr auto 20px;
+  gap: 20px;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+.mini-project span {
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+.mini-project strong {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.mini-project:hover strong {
+  color: var(--accent);
+}
+.skill-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 25 0;
+}
+.skill-cloud span,
+.detail-stack span {
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--muted-foreground);
+  transition: border-color 0.25s, color 0.25s, transform 0.25s;
+}
+.skill-cloud span:hover {
+  border-color: var(--accent);
+  color: var(--foreground);
+  transform: translateY(-3px);
+}
+.cta-section {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 14vh;
+  padding-bottom: 60px;
+}
+.cta-link {
+  width: fit-content;
+  margin-top: 50px;
+  border-bottom: 1px solid var(--foreground);
+  padding-bottom: 12px;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.cta-link:hover {
+  color: var(--accent);
+  transform: translateX(6px);
+}
+.cta-bottom {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: auto;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.cta-bottom .text-link {
+  margin-left: auto;
+}
+.avatar {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  object-fit: cover;
+  filter: grayscale(1);
+}
+.site-footer {
+  border-top: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.projects-hero {
+  padding-top: 14vh;
+  padding-bottom: 14vh;
+}
+.projects-hero h1 {
+  margin-top: 28px;
+  font-size: clamp(4rem, 9vw, 9rem);
+}
+.projects-hero .lede {
+  margin-top: 44px;
+}
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 100px 32px;
+  padding-bottom: 16vh;
+}
+.project-detail {
+  padding-top: 12vh;
+  padding-bottom: 12vh;
+}
+.project-detail h1 {
+  margin-top: 24px;
+  font-size: clamp(4rem, 9vw, 9rem);
+}
+.detail-lede {
+  max-width: 700px;
+  margin-top: 32px;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+  color: var(--muted-foreground);
+}
+.detail-image {
+  margin-top: 80px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.detail-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.detail-copy {
+  display: grid;
+  grid-template-columns: 1.4fr 0.6fr;
+  gap: 80px;
+  max-width: 900px;
+  margin: 80px auto 0;
+}
+.detail-description {
+  max-width: 560px;
+  margin: 18px 0 28px;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+.detail-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+.detail-stack span {
+  padding: 8px 10px;
+  font-size: 12px;
+}
+/* Hidden until <Motion> reveals it on scroll; the <noscript> block in the
+   layout restores visibility when JS is unavailable. */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+}
+@media (max-width: 700px) {
+  .site-header,
+  .site-footer,
+  .section-shell {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .site-header nav {
+    gap: 12px;
+  }
+  .hero {
+    min-height: 78vh;
+    padding-top: 8vh;
+  }
+  .hero h1 {
+    font-size: clamp(2.5rem, 13vw, 4.25rem);
+  }
+  .industry-rotator {
+    margin-top: 22px;
+    font-size: 1.05rem;
+    gap: 10px;
+  }
+  .hero-footer {
+    align-items: start;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .opening-section {
+    padding-top: 16vh;
+    padding-bottom: 16vh;
+  }
+  .opening-section h2,
+  .offer-section h2,
+  .work-section h2,
+  .skills-section h2,
+  .cta-section h2 {
+    font-size: clamp(3rem, 14vw, 5rem);
+  }
+  .offer-list {
+    margin-top: 60px;
+  }
+  .offer-row {
+    grid-template-columns: 35px 1fr;
+    gap: 12px;
+  }
+  .offer-row p {
+    grid-column: 2;
+  }
+  .heading-row {
+    align-items: start;
+    flex-direction: column;
+    margin-bottom: 50px;
+  }
+  .mini-project {
+    grid-template-columns: 30px 1fr 18px;
+    gap: 10px;
+  }
+  .mini-project span:nth-child(3) {
+    display: none;
+  }
+  .skill-cloud {
+    margin-top: 60px;
+  }
+  .cta-bottom {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .cta-bottom .text-link {
+    width: 100%;
+    margin-left: 70px;
+  }
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 64px;
+  }
+  .projects-hero {
+    padding-top: 10vh;
+    padding-bottom: 10vh;
+  }
+  .projects-hero h1 {
+    font-size: clamp(3.5rem, 16vw, 5.5rem);
+  }
+  .project-detail {
+    padding-top: 10vh;
+  }
+  .detail-image {
+    margin-top: 52px;
+  }
+  .detail-copy {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    margin-top: 52px;
+  }
+  .site-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .industry-item {
+    transform: none;
+  }
+  .hero-robot-track {
+    display: none;
+  }
+  * {
+    transition-duration: 0.01ms !important;
+  }
+}
