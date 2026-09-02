@@ -100,6 +100,34 @@ export const projects: Project[] = [
     ], // TODO: confirm
     url: "https://www.landers.ph",
   },
+  {
+    slug: "zenmarinecharter",
+    name: "Zen Marine Charter",
+    year: "2026", // TODO: confirm
+    role: "Project Lead",
+    oneLiner:
+      "Booking and charter management for a private luxury yacht operating out of Destin, Florida.",
+    description:
+      "Charter owners run a booking end to end — dates synced to the calendars on both sides, contracts handled in the same flow, and enquiries carried through to GoHighLevel for follow-up.",
+    image: "/projects/zenmarine-dashboard.png",
+    imageAlt: "Zen Marine Charter booking site",
+    stack: ["Next.js", "TypeScript", "PostgreSQL"], // TODO: confirm
+    url: "https://www.zenmarinecharter.com",
+  },
+  {
+    slug: "zenintent",
+    name: "Zen Intent",
+    year: "2026", // TODO: confirm
+    role: "Project Lead",
+    oneLiner:
+      "B2B lead generation built on prospect pain points instead of cold lists.",
+    description:
+      "Clients get their leads without scraping sites by hand — AI does the gathering and verifies each prospect before it reaches the list.",
+    image: "/projects/zenintent-dashboard.png",
+    imageAlt: "Zen Intent lead targeting screen",
+    stack: ["Next.js", "TypeScript", "PostgreSQL"], // TODO: confirm
+    url: "https://www.zenintent.io",
+  },
 ];
 
 export const industries = [
@@ -108,6 +136,7 @@ export const industries = [
   "accounting",
   "education",
   "ecommerce",
+  "hospitality",
 ];
 
 export const skills = [
