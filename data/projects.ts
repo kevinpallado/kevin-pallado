@@ -9,6 +9,17 @@ export type Project = {
   imageAlt: string;
   stack: string[];
   url?: string;
+  /**
+   * Year and stack are Kevin's own unconfirmed recollection. The patch bay
+   * draws these lines at half weight and dashed, so the page never asserts
+   * what has not been verified. Clear the flag once the facts are checked.
+   */
+  unverified?: boolean;
+  /**
+   * Order-of-magnitude scale, only where there is evidence for it. Never
+   * invent one: an absent reading renders as an absent reading.
+   */
+  scale?: { value: string; label: string };
 };
 
 export const projects: Project[] = [
@@ -25,6 +36,7 @@ export const projects: Project[] = [
     imageAlt: "LondonFoster dashboard",
     stack: ["Laravel", "MySQL", "JavaScript", "AWS"],
     url: "https://office.londonfoster.org",
+    scale: { value: "1,300+", label: "agents on the platform" },
   },
   {
     slug: "racketa",
@@ -70,21 +82,21 @@ export const projects: Project[] = [
   {
     slug: "basc-eportal",
     name: "BaSC ePortal",
-    year: "2025", // TODO: confirm
+    year: "2023 — present",
     role: "Contributor",
     oneLiner:
-      "Online admissions and student information portal for a college enrollment workflow.",
+      "Enrollment system for a college — online admissions, student records, and the staff screens that process each applicant.",
     description:
-      "Contributed to the portal handling freshman and transferee applications, student accounts, and the internal screens staff use to process enrollment.",
+      "Contributed to the college's enrollment system: freshman and transferee applications, student accounts, and the internal screens staff use to review and enroll each applicant.",
     image: "/projects/enrollment-dashboard.png",
     imageAlt: "BaSC ePortal enrollment system",
-    stack: ["Laravel", "PHP", "MySQL"], // TODO: confirm
+    stack: ["Laravel", "PHP", "MySQL"],
     url: "https://bsc.iclique.online",
   },
   {
     slug: "landers",
     name: "Landers Superstore",
-    year: "2025", // TODO: confirm
+    year: "2026 — present",
     role: "Contributor",
     oneLiner:
       "Ecommerce storefront and online grocery ordering for a membership superstore chain.",
@@ -92,18 +104,13 @@ export const projects: Project[] = [
       "Contributed to the ecommerce experience for a membership warehouse retailer — product browsing, cart and checkout flows, and the integrations behind online ordering.",
     image: "/projects/landers-dashboard.png",
     imageAlt: "Landers Superstore online store",
-    stack: [
-      "JavaScript",
-      "REST APIs",
-      "MicroService",
-      "Cloud Development Kit (CDK)",
-    ], // TODO: confirm
+    stack: ["JavaScript", "REST APIs", "Microservices", "AWS CDK"],
     url: "https://www.landers.ph",
   },
   {
     slug: "zenmarinecharter",
     name: "Zen Marine Charter",
-    year: "2026", // TODO: confirm
+    year: "2026",
     role: "Project Lead",
     oneLiner:
       "Booking and charter management for a private luxury yacht operating out of Destin, Florida.",
@@ -111,13 +118,13 @@ export const projects: Project[] = [
       "Charter owners run a booking end to end — dates synced to the calendars on both sides, contracts handled in the same flow, and enquiries carried through to GoHighLevel for follow-up.",
     image: "/projects/zenmarine-dashboard.png",
     imageAlt: "Zen Marine Charter booking site",
-    stack: ["Next.js", "TypeScript", "PostgreSQL"], // TODO: confirm
+    stack: ["Next.js", "TypeScript", "PostgreSQL", "GoHighLevel"],
     url: "https://www.zenmarinecharter.com",
   },
   {
     slug: "zenintent",
     name: "Zen Intent",
-    year: "2026", // TODO: confirm
+    year: "2026",
     role: "Project Lead",
     oneLiner:
       "B2B lead generation built on prospect pain points instead of cold lists.",
@@ -125,7 +132,7 @@ export const projects: Project[] = [
       "Clients get their leads without scraping sites by hand — AI does the gathering and verifies each prospect before it reaches the list.",
     image: "/projects/zenintent-dashboard.png",
     imageAlt: "Zen Intent lead targeting screen",
-    stack: ["Next.js", "TypeScript", "PostgreSQL"], // TODO: confirm
+    stack: ["Next.js", "TypeScript", "PostgreSQL"],
     url: "https://www.zenintent.io",
   },
 ];
@@ -159,3 +166,48 @@ export const skills = [
 ];
 
 export const featuredProject = projects[0];
+
+/** A jack's id has to survive being put in an SVG id and a CSS selector. */
+export function jackId(label: string) {
+  return label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+/**
+ * The service row of the bay, in the order the ports are wired. Derived from
+ * the projects themselves so a jack can never exist without a system behind
+ * it — the bay is the real graph, not a decorative one.
+ */
+export const services: { id: string; label: string; systems: string[] }[] =
+  (() => {
+    const order: string[] = [];
+    const bySystem = new Map<string, string[]>();
+    for (const project of projects) {
+      for (const item of project.stack) {
+        if (!bySystem.has(item)) {
+          bySystem.set(item, []);
+          order.push(item);
+        }
+        bySystem.get(item)!.push(project.slug);
+      }
+    }
+    return order.map((label) => ({
+      id: jackId(label),
+      label,
+      systems: bySystem.get(label)!,
+    }));
+  })();
+
+/**
+ * Elapsed years a system has been running, for the IN SERVICE meter. Counted
+ * as a difference, not inclusively: 2019 to 2026 is seven years, and calling
+ * it eight would be the kind of rounding-up this site exists not to do.
+ */
+export function yearsInService(year: string) {
+  const start = Number(year.slice(0, 4));
+  if (!Number.isFinite(start)) return null;
+  const end = /present/i.test(year)
+    ? new Date().getFullYear()
+    : Number(year.slice(-4));
+  if (!Number.isFinite(end)) return null;
+  return Math.max(1, end - start);
+}

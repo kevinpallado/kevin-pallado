@@ -1,11 +1,18 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Geist } from 'next/font/google'
-import { Motion } from '@/components/motion'
+import { Archivo } from 'next/font/google'
 import { site } from '@/lib/site'
 import './globals.css'
 
-const geist = Geist({ subsets: ['latin'], variable: '--font-geist' })
+// One family across the whole system, worked through its width and weight
+// axes: expanded and heavy for panel legends, condensed caps for the
+// designation strips, normal for body, tabular figures for every number.
+const archivo = Archivo({
+  subsets: ['latin'],
+  axes: ['wdth'],
+  display: 'swap',
+  variable: '--font-archivo',
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -55,7 +62,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   colorScheme: 'light',
-  themeColor: '#ffffff',
+  themeColor: '#dde0da',
   width: 'device-width',
   initialScale: 1,
 }
@@ -76,7 +83,7 @@ const personSchema = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={geist.variable}>
+    <html lang="en" className={archivo.variable}>
       <head>
         <noscript>
           <style>{'.reveal{opacity:1!important;transform:none!important}'}</style>
@@ -88,7 +95,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       <body className="antialiased">
-        <Motion>{children}</Motion>
+        {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

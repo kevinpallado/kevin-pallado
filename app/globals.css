@@ -1,603 +1,1423 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+
+/* ============================================================================
+   The Patch Bay
+   A light machine-room ground with charcoal rack panels banding across it.
+   Brass is reserved for connection points. Cord red means exactly one thing:
+   a live, patched connection. It is never used for text — at 4.4:1 on the
+   ground and 2.5:1 on the panel it does not clear the contrast floor, and
+   reserving it keeps the one saturated element on screen meaningful.
+   ========================================================================= */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-border: var(--border);
-  --color-primary: var(--primary);
-  --font-sans: var(--font-geist);
+  --color-background: var(--ground);
+  --color-foreground: var(--ink);
+  --font-sans: var(--font-archivo);
 }
+
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.19 0.015 260);
-  --muted-foreground: oklch(0.48 0.02 260);
-  --border: oklch(0.19 0.015 260 / 14%);
-  --primary: oklch(0.25 0.025 260);
-  --accent: oklch(0.62 0.12 245);
-  --surface: oklch(0.975 0.008 260);
+  /* Ground — equipment grey-green, the real colour of telco and broadcast
+     hardware. Light, because this is read on a laptop in a bright office. */
+  --ground: #dde0da;
+  --ground-deep: #d1d5cd;
+  --bone: #f2f1ea;
+  --bone-edge: #d8d7cd;
+
+  /* Panel — the rack unit. Committed fields, not accents. */
+  --panel: #1e2022;
+  --panel-lift: #272a2c;
+  --panel-edge: #3a3f41;
+
+  /* Metal and cord. */
+  --brass: #b08d3f;
+  --brass-lit: #dcb864;
+  --brass-dim: #6d5a2e;
+  --cord: #c0392b;
+  --cord-deep: #97271b;
+
+  /* Ink. Secondary tones are tinted from the surface hue, never grey. */
+  --ink: #16181a;
+  --ink-soft: #4a5150;
+  --ink-faint: #5c6361;
+  --on-panel: #eef0ec;
+  --on-panel-soft: #a6aeac;
+  --on-panel-faint: #8d9492;
+
+  --rule: color-mix(in oklab, var(--ink) 18%, transparent);
+  --rule-panel: color-mix(in oklab, var(--on-panel) 16%, transparent);
+
+  --unit: 8px;
+  --rail: 26px;
+  --shell: 1280px;
+  --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
 }
-* {
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
+
 html {
-  background: var(--background);
+  background: var(--ground);
+  -webkit-text-size-adjust: 100%;
+  scrollbar-color: var(--brass-dim) var(--ground-deep);
 }
-/* ScrollSmoother wrapper. Fixed-position UI must live outside #smooth-wrapper,
-   because the content is moved with a transform. */
-#smooth-wrapper {
-  overflow: hidden;
-}
-.scroll-progress {
-  position: fixed;
-  inset: 0 0 auto 0;
-  z-index: 50;
-  height: 2px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: 0 50%;
-  pointer-events: none;
-}
+
 body {
   margin: 0;
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), sans-serif;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  -webkit-font-smoothing: antialiased;
 }
+
+/* Browser surfaces belong to the design system too. */
+::selection {
+  background: var(--brass);
+  color: #16140d;
+}
+.panel ::selection {
+  background: var(--brass-lit);
+  color: #16140d;
+}
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+::-webkit-scrollbar-track {
+  background: var(--ground-deep);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--brass-dim);
+  border: 3px solid var(--ground-deep);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brass);
+}
+
+:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.panel :focus-visible {
+  outline-color: var(--brass-lit);
+}
+
 a {
   color: inherit;
   text-decoration: none;
 }
-.site-header,
-.site-footer {
+
+h1,
+h2,
+h3,
+p,
+figure,
+ul,
+ol {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* ---------------------------------------------------------------- the rack */
+
+.rack {
+  position: relative;
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding-inline: calc(var(--rail) + clamp(12px, 3vw, 40px));
+}
+
+/* Perforated rails. This is the frame the units bolt into: the holes are
+   material, not ornament, so they hold their 32px pitch at every width. */
+.rack::before,
+.rack::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--rail);
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    var(--ground-deep) 0 3.5px,
+    transparent 3.6px
+  );
+  background-size: var(--rail) 32px;
+  background-repeat: repeat-y;
+  border-inline: 1px solid var(--rule);
+  pointer-events: none;
+}
+.rack::before {
+  left: 0;
+}
+.rack::after {
+  right: 0;
+}
+
+.unit {
+  padding-block: clamp(56px, 9vw, 116px);
+  border-top: 1px solid var(--rule);
+}
+.unit:first-child {
+  border-top: 0;
+}
+
+/* Section header: a bone designation plate bolted beside the heading, not a
+   label line stacked above it. Every region still carries its literal name. */
+.unit-head {
+  display: grid;
+  grid-template-columns: minmax(158px, 0.26fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 16px 44px;
+  margin-bottom: clamp(24px, 3.4vw, 44px);
+}
+.designation {
+  position: relative;
+  display: grid;
+  gap: 5px;
+  padding: 11px 14px;
+  background: var(--bone);
+  border: 1px solid var(--bone-edge);
+  border-radius: 2px;
+  box-shadow:
+    inset 0 1px 0 #fffffe,
+    0 1px 1px rgba(20, 24, 22, 0.07);
+  font-size: 10.5px;
+  font-weight: 600;
+  font-stretch: 80%;
+  letter-spacing: 0.16em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.designation b {
+  font-weight: 750;
+  color: var(--ink);
+}
+/* Two countersunk screws, as on any equipment label. */
+.designation::before,
+.designation::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 50%;
+  background: #b9b8ad;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+.designation::before {
+  left: 5px;
+}
+.designation::after {
+  right: 5px;
+}
+.panel .designation {
+  border-color: #46493f;
+  box-shadow:
+    inset 0 1px 0 #fffffe,
+    0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Row label inside the bay: names a row of jacks, never a heading. */
+.strip {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  font-stretch: 82%;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.strip b {
+  font-weight: 700;
+  color: var(--ink);
+}
+.strip span {
+  margin-left: auto;
+  font-weight: 500;
+  color: var(--ink-faint);
+  text-align: right;
+}
+.panel .strip {
+  border-bottom-color: var(--rule-panel);
+  color: var(--on-panel-soft);
+}
+.bay .strip {
+  position: relative;
+  z-index: 2;
+  background: var(--panel);
+}
+.panel .strip b {
+  color: var(--brass-lit);
+}
+.panel .strip span {
+  color: var(--on-panel-faint);
+}
+
+/* ------------------------------------------------------------- typography */
+
+.legend {
+  font-size: clamp(2.1rem, 5.4vw, 4.4rem);
+  font-weight: 700;
+  font-stretch: 112%;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+.legend-sm {
+  font-size: clamp(1.5rem, 3.2vw, 2.4rem);
+  font-weight: 650;
+  font-stretch: 108%;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.lede {
+  max-width: 62ch;
+  font-size: clamp(1.02rem, 1.5vw, 1.24rem);
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+.panel .lede {
+  color: var(--on-panel-soft);
+}
+.plate {
+  font-size: 10px;
+  font-weight: 650;
+  font-stretch: 80%;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.panel .plate {
+  color: var(--on-panel-faint);
+}
+
+/* ------------------------------------------------------------ site header */
+
+.site-header {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 28px 32px;
+  gap: 20px;
+  padding-block: 14px;
+  border-bottom: 1px solid var(--rule);
 }
-.site-header {
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  font-size: 19px;
+  font-weight: 700;
+  font-stretch: 108%;
+  letter-spacing: -0.05em;
+}
+.brand i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--brass);
+  box-shadow: inset 0 0 0 1.5px color-mix(in oklab, var(--ink) 45%, transparent);
 }
 .site-header nav {
   display: flex;
-  gap: 24px;
-  color: var(--muted-foreground);
+  gap: clamp(14px, 3vw, 30px);
+  font-size: 11px;
+  font-weight: 600;
+  font-stretch: 84%;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
 }
 .site-header nav a,
-.back-link,
-.text-link,
-.button-link,
-.cta-link,
+.back-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding-block: 4px;
+  transition: color 0.25s var(--ease-settle);
+}
+.site-header nav a::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 1.5px;
+  background: var(--brass);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.35s var(--ease-settle);
+}
+.site-header nav a:hover,
+.back-link:hover {
+  color: var(--ink);
+}
+.site-header nav a:hover::after {
+  transform: scaleX(1);
+}
+.back-link {
+  font-size: 11px;
+  font-weight: 600;
+  font-stretch: 84%;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ------------------------------------------------------------- the panels */
+
+.panel {
+  position: relative;
+  background: var(--panel);
+  color: var(--on-panel);
+  border-radius: 3px;
+  box-shadow:
+    0 1px 0 0 var(--panel-edge) inset,
+    0 18px 40px -28px rgba(10, 14, 12, 0.85);
+}
+/* Mounting screws at the panel's four corners. */
+.panel::before,
+.panel::after {
+  content: "";
+  position: absolute;
+  top: 13px;
+  bottom: 13px;
+  width: 7px;
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    var(--panel-edge) 0 3px,
+    transparent 3.1px
+  );
+  background-repeat: no-repeat;
+  background-size: 7px 7px;
+  background-position: top center, bottom center;
+  pointer-events: none;
+}
+.panel::before {
+  left: 11px;
+  background-position:
+    top center,
+    bottom center;
+  background-image:
+    radial-gradient(circle at 50% 50%, var(--panel-edge) 0 3px, transparent 3.1px),
+    radial-gradient(circle at 50% 50%, var(--panel-edge) 0 3px, transparent 3.1px);
+}
+.panel::after {
+  right: 11px;
+  background-image:
+    radial-gradient(circle at 50% 50%, var(--panel-edge) 0 3px, transparent 3.1px),
+    radial-gradient(circle at 50% 50%, var(--panel-edge) 0 3px, transparent 3.1px);
+}
+
+/* --------------------------------------------------------------- the bay  */
+
+.bay-unit {
+  padding-block: clamp(28px, 4vw, 52px) clamp(48px, 7vw, 80px);
+}
+.bay-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px 48px;
+  margin-bottom: clamp(20px, 2.6vw, 32px);
+}
+.bay-head h1 {
+  font-size: clamp(1.8rem, 3.6vw, 2.75rem);
+  font-weight: 700;
+  font-stretch: 112%;
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+}
+.bay-head .role {
+  margin-top: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  font-stretch: 82%;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.bay-claim {
+  max-width: 46ch;
+  font-size: clamp(0.94rem, 1.1vw, 1.02rem);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+.bay {
+  position: relative;
+  padding: clamp(20px, 2.6vw, 32px) clamp(20px, 3vw, 40px);
+}
+.bay-rows {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: clamp(20px, 2.4vw, 28px);
+}
+.bay-cords {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.cord {
+  fill: none;
+  stroke: var(--cord);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  transition: opacity 0.45s var(--ease-settle);
+}
+/* Confidence is drawn, not footnoted: an unverified stack entry is a
+   provisional line, visibly half-weight and broken. */
+.cord.is-provisional {
+  stroke: var(--cord-deep);
+  stroke-width: 1.3;
+  stroke-dasharray: 5 5;
+  opacity: 0.85;
+}
+.cord-draw {
+  animation: cord-in 0.72s var(--ease-settle) both;
+}
+@keyframes cord-in {
+  from {
+    stroke-dashoffset: var(--len);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.jack-row {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 11px 4px;
+  justify-items: stretch;
+}
+.jack-row.is-services {
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+  gap: 14px 4px;
+}
+
+.jack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  padding: 2px;
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  text-align: center;
+}
+.jack .port {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #121415;
+  box-shadow:
+    0 0 0 2px var(--brass-dim),
+    0 1px 2px rgba(0, 0, 0, 0.6) inset;
+  transition:
+    box-shadow 0.3s var(--ease-settle),
+    transform 0.3s var(--ease-settle);
+}
+.jack .port::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #05070a;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.9) inset;
+}
+.jack .tag {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  font-size: 9px;
+  font-weight: 600;
+  font-stretch: 78%;
+  letter-spacing: 0.08em;
+  line-height: 1.18;
+  text-transform: uppercase;
+  color: var(--on-panel-faint);
+  transition: color 0.3s var(--ease-settle);
+}
+.jack.is-system .port {
+  width: 30px;
+  height: 30px;
+}
+.jack.is-system .port::after {
+  width: 9px;
+  height: 9px;
+}
+.jack.is-system .tag {
+  max-width: 100%;
+  font-size: 10.5px;
+  color: var(--on-panel-soft);
+}
+.jack:hover .port,
+.jack:focus-visible .port {
+  transform: translateY(-1px);
+}
+.jack.is-live .port {
+  box-shadow:
+    0 0 0 2px var(--brass-lit),
+    0 0 0 5px color-mix(in oklab, var(--brass) 26%, transparent),
+    0 1px 2px rgba(0, 0, 0, 0.6) inset;
+}
+.jack.is-live .tag {
+  color: var(--on-panel);
+}
+.jack.is-idle .port {
+  box-shadow:
+    0 0 0 1.5px color-mix(in oklab, var(--brass-dim) 60%, transparent),
+    0 1px 2px rgba(0, 0, 0, 0.6) inset;
+}
+.jack.is-idle .tag {
+  color: var(--on-panel-faint);
+}
+/* The plug seated in a live port. */
+.jack.is-live .port::after {
+  background: var(--cord);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.55) inset;
+}
+
+.bay-readout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 20px 48px;
+  margin-top: clamp(24px, 3vw, 32px);
+  padding-top: clamp(18px, 2.2vw, 24px);
+  border-top: 1px solid var(--rule-panel);
+}
+.bay-readout .name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+  font-weight: 680;
+  font-stretch: 106%;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.bay-readout .since {
+  font-size: 10px;
+  font-weight: 650;
+  font-stretch: 80%;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--brass-lit);
+}
+.bay-readout .since.is-provisional {
+  color: var(--on-panel-soft);
+}
+.bay-readout .desc {
+  max-width: 60ch;
+  margin-top: 6px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--on-panel-soft);
+}
+.readout-link {
+  color: var(--on-panel);
+  text-decoration: underline;
+  text-decoration-color: var(--brass);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+  transition: text-decoration-color 0.25s var(--ease-settle);
+}
+.readout-link:hover {
+  text-decoration-color: var(--brass-lit);
+}
+.bay-readout .reading {
+  margin-top: 10px;
+  font-size: 0.82rem;
+  color: var(--on-panel-faint);
+}
+.bay-readout .reading b {
+  margin-right: 2px;
+  font-weight: 680;
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--brass-lit);
+}
+.meters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 26px;
+  margin-top: 14px;
+}
+.meter {
+  display: grid;
+  gap: 3px;
+}
+.meter b {
+  font-size: 1.15rem;
+  font-weight: 680;
+  font-stretch: 104%;
+  letter-spacing: -0.01em;
+  color: var(--brass-lit);
+}
+.meter.is-provisional b {
+  color: var(--on-panel-soft);
+}
+.meters.on-ground b {
+  color: var(--ink);
+}
+.meters.on-ground span {
+  color: var(--ink-faint);
+}
+.meter span {
+  font-size: 9.5px;
+  font-weight: 650;
+  font-stretch: 78%;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--on-panel-faint);
+}
+
+.jack-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 15px;
+  padding: 6px 2px;
+  color: var(--on-panel);
+}
+.jack-cta-jack {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #121415;
+  box-shadow:
+    0 0 0 2px var(--brass),
+    0 1px 2px rgba(0, 0, 0, 0.6) inset;
+  transition: box-shadow 0.3s var(--ease-settle);
+}
+.jack-cta-jack::after {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #05070a;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.9) inset;
+}
+/* The cord hangs from the port with a free end: nothing is plugged in yet. */
+.jack-cta .dangle {
+  position: absolute;
+  top: 56%;
+  left: 44%;
+  width: 44px;
+  height: 32px;
+  overflow: visible;
+  pointer-events: none;
+}
+.jack-cta .dangle path {
+  fill: none;
+  stroke: var(--cord);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+/* The free end of an unplugged cord. */
+.jack-cta .dangle circle {
+  fill: var(--cord);
+}
+.jack-cta-text {
+  display: grid;
+  gap: 3px;
+}
+.jack-cta-text b {
+  font-size: 11px;
+  font-weight: 700;
+  font-stretch: 84%;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+}
+.jack-cta-text span {
+  font-size: 12.5px;
+  color: var(--on-panel-soft);
+}
+.jack-cta-text em {
+  font-size: 11px;
+  font-style: normal;
+  color: var(--on-panel-faint);
+}
+.jack-cta:hover .jack-cta-jack,
+.jack-cta:focus-visible .jack-cta-jack {
+  box-shadow:
+    0 0 0 2px var(--brass-lit),
+    0 0 0 5px color-mix(in oklab, var(--brass) 26%, transparent),
+    0 1px 2px rgba(0, 0, 0, 0.6) inset;
+}
+.jack-cta:hover .jack-cta-jack::after {
+  background: var(--cord);
+}
+
+.bay-note {
+  margin-top: 16px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--on-panel-faint);
+}
+
+/* ------------------------------------------------------------- ownership  */
+
+.owns {
+  display: grid;
+  gap: 0;
+}
+/* Separation by removing rule, never by adding a box. */
+.own {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.34fr) minmax(0, 1fr);
+  gap: 10px 40px;
+  padding-block: clamp(20px, 2.6vw, 30px);
+  border-bottom: 1px solid var(--rule);
+}
+.own:last-child {
+  border-bottom: 0;
+}
+.own dt {
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  font-weight: 680;
+  font-stretch: 104%;
+  letter-spacing: -0.015em;
+}
+.own dd {
+  margin: 0;
+  max-width: 58ch;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+/* --------------------------------------------------------- service record */
+
+.record {
+  display: grid;
+  gap: 0;
+}
+.entry {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(150px, 0.52fr)
+    clamp(240px, 25vw, 330px);
+  align-items: center;
+  gap: 22px 36px;
+  padding-block: clamp(22px, 3vw, 34px);
+  border-bottom: 1px solid var(--rule);
+  transition: background 0.3s var(--ease-settle);
+}
+.entry:last-child {
+  border-bottom: 0;
+}
+.entry:hover {
+  background: color-mix(in oklab, var(--bone) 55%, transparent);
+}
+.entry-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 14px;
+}
+.entry-head h2,
+.entry-head h3 {
+  font-size: clamp(1.3rem, 2.5vw, 1.95rem);
+  font-weight: 700;
+  font-stretch: 108%;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.entry .years {
+  font-size: 11px;
+  font-weight: 650;
+  font-stretch: 80%;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.entry .one-liner {
+  max-width: 56ch;
+  margin-top: 10px;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+.entry-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin-top: 14px;
+  font-size: 11px;
+  font-weight: 600;
+  font-stretch: 82%;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.entry-meta .role {
+  color: var(--ink-soft);
+}
+.entry-meta .provisional {
+  color: var(--cord-deep);
+}
+
+/* The spec column: identical fields in identical positions on every line, so
+   eight systems compare at a glance without opening one. */
+.entry-spec {
+  display: grid;
+  gap: 7px;
+  align-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  font-stretch: 82%;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  line-height: 1.45;
+  color: var(--ink-faint);
+}
+.entry-spec .role {
+  color: var(--ink-soft);
+}
+.entry-spec .provisional {
+  color: var(--cord-deep);
+}
+
+.scale-lead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 3px;
+  color: var(--ink);
+}
+.scale-lead b {
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-stretch: 104%;
+  letter-spacing: -0.01em;
+}
+.scale-lead em {
+  font-style: normal;
+  color: var(--ink-faint);
+}
+/* The leader: it points at the monitor beside it, which is the proof. */
+.scale-lead::after {
+  content: "";
+  flex: 1;
+  min-width: 14px;
+  height: 1px;
+  background: var(--brass);
+}
+
+/* Rack-mounted monitor: the screenshot is evidence, at evidence scale. */
+.monitor {
+  position: relative;
+  padding: 7px;
+  background: var(--panel);
+  border-radius: 3px;
+  box-shadow:
+    0 0 0 1px var(--panel-edge) inset,
+    0 10px 24px -18px rgba(10, 14, 12, 0.9);
+}
+.monitor img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: 50% 0;
+  border-radius: 1px;
+  filter: saturate(0.9);
+}
+.monitor figcaption {
+  position: absolute;
+  inset: auto 7px 7px 7px;
+  padding: 5px 8px;
+  background: color-mix(in oklab, var(--panel) 88%, transparent);
+  font-size: 9px;
+  font-weight: 650;
+  font-stretch: 78%;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--on-panel-soft);
+}
+.entry-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 11px;
+  font-weight: 700;
+  font-stretch: 82%;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-bottom: 1.5px solid var(--brass);
+  padding-bottom: 3px;
+  transition: gap 0.3s var(--ease-settle);
+}
+.entry-link:hover {
+  gap: 13px;
+}
+.panel .entry-link {
+  color: var(--on-panel);
+}
+
+/* ------------------------------------------------------------- patch list */
+
+.patch-unit {
+  padding: clamp(22px, 3vw, 34px) clamp(20px, 2.6vw, 30px);
+}
+.patch-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  border-top: 1px solid var(--rule);
+  border-left: 1px solid var(--rule);
+}
+.panel .patch-list {
+  border-top-color: var(--rule-panel);
+  border-left-color: var(--rule-panel);
+}
+.panel .patch-list li {
+  border-right-color: var(--rule-panel);
+  border-bottom-color: var(--rule-panel);
+  color: var(--on-panel-soft);
+}
+.panel .patch-list li i {
+  box-shadow: 0 0 0 1.5px var(--brass);
+}
+.panel .fields li {
+  border-color: var(--rule-panel);
+  color: var(--on-panel-soft);
+}
+.patch-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 14px;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  font-size: 12px;
+  font-weight: 600;
+  font-stretch: 86%;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.patch-list li i {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #121415;
+  box-shadow: 0 0 0 1.5px var(--brass-dim);
+}
+.fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 8px;
+  margin-top: 26px;
+}
+.fields li {
+  padding: 7px 13px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  font-stretch: 84%;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* --------------------------------------------------------------- contact  */
+
+.contact {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 32px 48px;
+  padding: clamp(28px, 4vw, 48px);
+}
+.contact h2 {
+  font-size: clamp(1.8rem, 4.4vw, 3.4rem);
+  font-weight: 700;
+  font-stretch: 112%;
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+.contact .lede {
+  margin-top: 16px;
+}
+.contact-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 26px;
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  font-weight: 680;
+  font-stretch: 104%;
+  letter-spacing: -0.015em;
+  color: var(--on-panel);
+  border-bottom: 2px solid var(--brass);
+  padding-bottom: 6px;
+  transition: gap 0.3s var(--ease-settle);
+}
+.contact-cta:hover {
+  gap: 20px;
+}
+.operator {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--on-panel-soft);
+}
+.operator img {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 2px var(--brass-dim);
+}
+.operator b {
+  display: block;
+  font-weight: 650;
+  color: var(--on-panel);
+}
+
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px 28px;
+  padding-block: 26px;
+  border-top: 1px solid var(--rule);
+  font-size: 11px;
+  font-weight: 600;
+  font-stretch: 84%;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
 .site-footer a {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  transition: color 0.25s ease, transform 0.25s ease;
+  color: var(--ink-soft);
+  transition: color 0.25s var(--ease-settle);
 }
-.site-header nav a:hover,
-.back-link:hover,
-.text-link:hover,
-.button-link:hover,
 .site-footer a:hover {
-  color: var(--accent);
+  color: var(--ink);
 }
-.brand {
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: -0.08em;
-  text-transform: none;
+
+/* ------------------------------------------------------------ inner pages */
+
+.page-head {
+  padding-block: clamp(44px, 7vw, 92px) clamp(28px, 4vw, 48px);
 }
-.brand span {
-  color: var(--accent);
-}
-.section-shell {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 32px;
-}
-.hero {
-  position: relative;
-  overflow: hidden;
-  min-height: 82vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-top: 10vh;
-  padding-bottom: 60px;
-}
-.hero-word {
-  position: relative;
-  display: inline-block;
-}
-.hero-robot-track {
-  position: absolute;
-  /* The GIF's figure sits left-of-centre in its square canvas, so the box
-     overlaps the period slightly to keep the robot next to the word. */
-  left: calc(100% - 0.25em);
-  bottom: 0.03em;
-  display: block;
-  /* Explicit size: the img inherits Tailwind preflight's max-width:100%, which
-     would resolve against this shrink-to-fit box and collapse it to zero. */
-  width: 1.4em;
-  height: 1.4em;
-  pointer-events: none;
-}
-.hero-robot {
-  display: block;
-  width: 100%;
-  height: 100%;
-  max-width: none;
-}
-.hero-meta,
-.eyebrow,
-.section-marker {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--muted-foreground);
-}
-.status-dot {
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  margin-right: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 4px oklch(0.68 0.12 73 / 20%);
-}
-h1,
-h2,
-h3,
-p {
-  margin: 0;
-}
-h1,
-h2 {
-  font-weight: 500;
-  letter-spacing: -0.06em;
-  line-height: 0.98;
-}
-h1 em,
-h2 em {
-  font-family: inherit;
-  font-style: normal;
-  font-weight: 600;
-  letter-spacing: -0.06em;
-}
-.hero h1 {
-  max-width: 1000px;
-  margin-top: 28px;
-  font-size: clamp(3rem, 7vw, 7.5rem);
-}
-.industry-rotator {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  margin-top: 30px;
-  font-size: clamp(1.1rem, 1.8vw, 1.5rem);
-  letter-spacing: -0.03em;
-}
-.industry-label {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--muted-foreground);
-  white-space: nowrap;
-}
-.industry-track {
-  display: inline-grid;
-  overflow: hidden;
-  line-height: 1.4;
-}
-.industry-item {
-  grid-area: 1 / 1;
-  opacity: 0;
-  transform: translateY(0.5em);
-  transition: opacity 0.45s ease, transform 0.45s ease;
-  white-space: nowrap;
-}
-.industry-item-active {
-  opacity: 1;
-  transform: translateY(0);
-}
-.hero-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  margin-top: auto;
-  font-size: 13px;
-  line-height: 1.5;
-}
-.hero-footer span,
-.cta-bottom span {
-  color: var(--muted-foreground);
-}
-.opening-section {
-  padding-top: 18vh;
-  padding-bottom: 18vh;
-}
-.opening-section h2,
-.offer-section h2,
-.work-section h2,
-.skills-section h2,
-.cta-section h2 {
-  font-size: clamp(3rem, 6vw, 6.5rem);
-  margin-top: 28px;
-}
-.lede {
-  max-width: 620px;
-  margin-top: 38px;
-  font-size: clamp(1.25rem, 2.2vw, 2rem);
-  line-height: 1.3;
-  letter-spacing: -0.03em;
-  color: var(--muted-foreground);
-}
-.offer-section,
-.work-section,
-.skills-section {
-  padding-top: 12vh;
-  padding-bottom: 14vh;
-}
-.section-marker {
-  display: flex;
-  gap: 18px;
-  border-top: 1px solid var(--border);
-  padding-top: 14px;
-}
-.offer-list {
-  margin: 50px 0;
-}
-.offer-row {
-  display: grid;
-  grid-template-columns: 60px 1fr 1fr;
-  gap: 24px;
-  align-items: baseline;
-  border-top: 1px solid var(--border);
-  padding: 24px 0;
-}
-.offer-row h3 {
-  font-size: 1.6rem;
+.page-head h1 {
+  font-size: clamp(2.2rem, 6vw, 4.6rem);
+  font-weight: 700;
+  font-stretch: 112%;
+  line-height: 0.95;
   letter-spacing: -0.04em;
-  font-weight: 500;
+  text-wrap: balance;
 }
-.offer-row p {
-  color: var(--muted-foreground);
-  font-size: 0.95rem;
-  line-height: 1.5;
+.page-head .lede {
+  margin-top: 22px;
 }
-.heading-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  gap: 24px;
-  margin-bottom: 80px;
+
+.detail-shot {
+  max-width: 600px;
+  margin-block: 0 clamp(26px, 3.4vw, 40px);
+  padding: 8px;
 }
-.button-link {
-  border-bottom: 1px solid var(--foreground);
-  padding-bottom: 8px;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  white-space: nowrap;
-}
-.project-image-wrap {
-  position: relative;
-  overflow: hidden;
-  background: var(--surface);
-  aspect-ratio: 16 / 10;
-}
-.project-image {
-  display: block;
+.detail-shot img {
   width: 100%;
-  height: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
   object-fit: cover;
-  object-position: top center;
-  /* transform is owned by GSAP (scroll parallax + hover zoom) — a CSS
-     transition on the same property would fight the scrub. */
+  object-position: 50% 0;
+  border-radius: 1px;
+  filter: saturate(0.9);
 }
-.project-arrow {
-  position: absolute;
-  right: 18px;
-  top: 18px;
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: var(--background);
-  font-size: 20px;
-  opacity: 0;
-  transform: translate(-8px, 8px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-.group:hover .project-arrow {
-  opacity: 1;
-  transform: translate(0, 0);
-}
-.mini-projects {
-  margin-top: 60px;
-  border-top: 1px solid var(--border);
-}
-.mini-project {
-  display: grid;
-  grid-template-columns: 50px 1fr auto 20px;
-  gap: 20px;
-  align-items: center;
-  padding: 20px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 14px;
-}
-.mini-project span {
-  color: var(--muted-foreground);
-  font-size: 11px;
-}
-.mini-project strong {
-  font-size: 1.2rem;
-  font-weight: 500;
-}
-.mini-project:hover strong {
-  color: var(--accent);
-}
-.skill-cloud {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 25 0;
-}
-.skill-cloud span,
-.detail-stack span {
-  border: 1px solid var(--border);
-  padding: 10px 14px;
-  border-radius: 999px;
-  font-size: 13px;
-  color: var(--muted-foreground);
-  transition: border-color 0.25s, color 0.25s, transform 0.25s;
-}
-.skill-cloud span:hover {
-  border-color: var(--accent);
-  color: var(--foreground);
-  transform: translateY(-3px);
-}
-.cta-section {
-  min-height: 70vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-top: 14vh;
-  padding-bottom: 60px;
-}
-.cta-link {
-  width: fit-content;
-  margin-top: 50px;
-  border-bottom: 1px solid var(--foreground);
-  padding-bottom: 12px;
-  font-size: 15px;
+.detail-shot figcaption {
+  margin-top: 12px;
+  font-size: 10px;
+  font-weight: 650;
+  font-stretch: 78%;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  color: var(--on-panel-faint);
 }
-.cta-link:hover {
-  color: var(--accent);
-  transform: translateX(6px);
+.detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(240px, 26vw, 340px);
+  gap: 36px 56px;
+  align-items: start;
+  padding-bottom: clamp(48px, 7vw, 90px);
 }
-.cta-bottom {
+.detail-grid h2 {
+  margin-bottom: 12px;
+  font-size: 11px;
+  font-weight: 650;
+  font-stretch: 80%;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.detail-grid p {
+  max-width: 60ch;
+  font-size: clamp(1.02rem, 1.4vw, 1.15rem);
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.detail-stack {
+  display: grid;
+  border-top: 1px solid var(--rule);
+}
+.detail-stack li {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-top: auto;
+  gap: 11px;
+  padding: 12px 2px;
+  border-bottom: 1px solid var(--rule);
   font-size: 12px;
-  line-height: 1.5;
-}
-.cta-bottom .text-link {
-  margin-left: auto;
-}
-.avatar {
-  flex-shrink: 0;
-  width: 56px;
-  height: 56px;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  object-fit: cover;
-  filter: grayscale(1);
-}
-.site-footer {
-  border-top: 1px solid var(--border);
-  color: var(--muted-foreground);
-  font-size: 11px;
+  font-weight: 600;
+  font-stretch: 86%;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-.projects-hero {
-  padding-top: 14vh;
-  padding-bottom: 14vh;
+.detail-stack li i {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #121415;
+  box-shadow: 0 0 0 1.5px var(--brass);
 }
-.projects-hero h1 {
-  margin-top: 28px;
-  font-size: clamp(4rem, 9vw, 9rem);
-}
-.projects-hero .lede {
-  margin-top: 44px;
-}
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 100px 32px;
-  padding-bottom: 16vh;
-}
-.project-detail {
-  padding-top: 12vh;
-  padding-bottom: 12vh;
-}
-.project-detail h1 {
-  margin-top: 24px;
-  font-size: clamp(4rem, 9vw, 9rem);
-}
-.detail-lede {
-  max-width: 700px;
-  margin-top: 32px;
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
-  line-height: 1.15;
-  letter-spacing: -0.04em;
-  color: var(--muted-foreground);
-}
-.detail-image {
-  margin-top: 80px;
-  overflow: hidden;
-  background: var(--surface);
-}
-.detail-image img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-.detail-copy {
-  display: grid;
-  grid-template-columns: 1.4fr 0.6fr;
-  gap: 80px;
-  max-width: 900px;
-  margin: 80px auto 0;
-}
-.detail-description {
-  max-width: 560px;
-  margin: 18px 0 28px;
-  font-size: 1.15rem;
-  line-height: 1.6;
-  color: var(--muted-foreground);
-}
-.detail-stack {
+.detail-links {
   display: flex;
   flex-wrap: wrap;
+  gap: 14px 26px;
+  margin-top: 26px;
+}
+.text-link {
+  display: inline-flex;
+  align-items: center;
   gap: 8px;
-  margin-top: 18px;
+  font-size: 11px;
+  font-weight: 700;
+  font-stretch: 82%;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border-bottom: 1.5px solid var(--brass);
+  padding-bottom: 3px;
+  transition: gap 0.3s var(--ease-settle);
 }
-.detail-stack span {
-  padding: 8px 10px;
+.text-link:hover {
+  gap: 13px;
+}
+
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  margin-top: 22px;
+  padding: 13px 15px;
+  border: 1px dashed var(--cord-deep);
+  border-radius: 2px;
   font-size: 12px;
+  line-height: 1.5;
+  color: var(--cord-deep);
 }
-/* Hidden until <Motion> reveals it on scroll; the <noscript> block in the
-   layout restores visibility when JS is unavailable. */
+.panel .notice {
+  border-color: color-mix(in oklab, var(--cord) 55%, transparent);
+  color: #efb3aa;
+}
+
+/* ------------------------------------------------------------ rhythm aids */
+
+.mt-block {
+  margin-top: clamp(30px, 4vw, 48px);
+}
+.mt-tight {
+  margin-top: clamp(22px, 3vw, 36px);
+}
+
+/* ---------------------------------------------------------------- reveals */
+
 .reveal {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(14px);
 }
-@media (max-width: 700px) {
-  .site-header,
-  .site-footer,
-  .section-shell {
-    padding-left: 20px;
-    padding-right: 20px;
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s var(--ease-settle),
+    transform 0.7s var(--ease-settle);
+}
+
+/* On a short laptop the bay still has to end inside the first viewport: the
+   open jack is the page's primary action and it does not belong below a fold. */
+@media (min-width: 821px) and (max-height: 760px) {
+  .bay-unit {
+    padding-top: 20px;
   }
-  .site-header nav {
-    gap: 12px;
+  .bay-head {
+    margin-bottom: 16px;
   }
-  .hero {
-    min-height: 78vh;
-    padding-top: 8vh;
+  .bay-readout {
+    margin-top: 18px;
+    padding-top: 16px;
   }
-  .hero h1 {
-    font-size: clamp(2.5rem, 13vw, 4.25rem);
+}
+
+/* ------------------------------------------------------------- responsive */
+
+@media (max-width: 1040px) {
+  .entry {
+    grid-template-columns: minmax(0, 1fr) minmax(140px, 0.5fr) 210px;
   }
-  .industry-rotator {
-    margin-top: 22px;
-    font-size: 1.05rem;
-    gap: 10px;
+  .detail-grid {
+    grid-template-columns: 1fr;
   }
-  .hero-footer {
+}
+
+@media (max-width: 820px) {
+  :root {
+    --rail: 16px;
+  }
+  .rack::before,
+  .rack::after {
+    background-size: var(--rail) 26px;
+    background-image: radial-gradient(
+      circle at 50% 50%,
+      var(--ground-deep) 0 2.5px,
+      transparent 2.6px
+    );
+  }
+  .bay-head,
+  .bay-readout,
+  .contact {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+  .bay-readout,
+  .contact {
     align-items: start;
-    flex-direction: column;
-    gap: 28px;
   }
-  .opening-section {
-    padding-top: 16vh;
-    padding-bottom: 16vh;
+  .entry {
+    grid-template-columns: 1fr;
   }
-  .opening-section h2,
-  .offer-section h2,
-  .work-section h2,
-  .skills-section h2,
-  .cta-section h2 {
-    font-size: clamp(3rem, 14vw, 5rem);
+  .entry-spec {
+    gap: 5px;
   }
-  .offer-list {
-    margin-top: 60px;
+  .monitor {
+    max-width: 340px;
   }
-  .offer-row {
-    grid-template-columns: 35px 1fr;
-    gap: 12px;
+  .jack-row {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
-  .offer-row p {
-    grid-column: 2;
+  .jack-row.is-services {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
   }
-  .heading-row {
-    align-items: start;
-    flex-direction: column;
-    margin-bottom: 50px;
+  .own {
+    grid-template-columns: 1fr;
+    gap: 6px;
   }
-  .mini-project {
-    grid-template-columns: 30px 1fr 18px;
-    gap: 10px;
-  }
-  .mini-project span:nth-child(3) {
+  .panel::before,
+  .panel::after {
     display: none;
   }
-  .skill-cloud {
-    margin-top: 60px;
+}
+
+@media (max-width: 560px) {
+  .jack-row.is-services {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px 2px;
   }
-  .cta-bottom {
-    align-items: flex-start;
-    flex-wrap: wrap;
+  .jack .port {
+    width: 18px;
+    height: 18px;
   }
-  .cta-bottom .text-link {
-    width: 100%;
-    margin-left: 70px;
+  .jack.is-system .port {
+    width: 26px;
+    height: 26px;
   }
-  .projects-grid {
-    grid-template-columns: 1fr;
-    gap: 64px;
+  /* Single words never split mid-word; a long one may run a few px past its
+     cell, since its neighbours are short. */
+  .jack .tag {
+    max-width: none;
+    overflow-wrap: normal;
+    font-size: 8px;
+    letter-spacing: 0.02em;
   }
-  .projects-hero {
-    padding-top: 10vh;
-    padding-bottom: 10vh;
+  .jack.is-system .tag {
+    max-width: none;
+    font-size: 9.5px;
+    letter-spacing: 0.02em;
   }
-  .projects-hero h1 {
-    font-size: clamp(3.5rem, 16vw, 5.5rem);
-  }
-  .project-detail {
-    padding-top: 10vh;
-  }
-  .detail-image {
-    margin-top: 52px;
-  }
-  .detail-copy {
-    grid-template-columns: 1fr;
-    gap: 48px;
-    margin-top: 52px;
-  }
-  .site-footer {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 12px;
-    padding-top: 20px;
-    padding-bottom: 20px;
+  .site-header nav {
+    gap: 13px;
   }
 }
+
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
   .reveal {
     opacity: 1;
     transform: none;
-  }
-  .industry-item {
-    transform: none;
-  }
-  .hero-robot-track {
-    display: none;
-  }
-  * {
-    transition-duration: 0.01ms !important;
   }
 }

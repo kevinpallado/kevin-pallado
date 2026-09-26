@@ -1,212 +1,223 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
-import { featuredProject, industries, projects, skills } from "@/data/projects";
-import { IndustryRotator } from "@/components/industry-rotator";
-import { HeroCarry } from "@/components/hero-carry";
+import { ArrowUpRight } from "lucide-react";
+import {
+  industries,
+  projects,
+  services,
+  skills,
+  yearsInService,
+} from "@/data/projects";
+import { PatchBay } from "@/components/patch-bay";
 import { Reveal } from "@/components/reveal";
-import { ProjectCard } from "@/components/project-card";
+import { site } from "@/lib/site";
+import { SiteHeader } from "@/components/site-header";
 
-const offers = [
+const owns = [
   [
-    "01",
     "Stakeholder ownership",
     "Helping stakeholders decide where the product goes, not just building to spec.",
   ],
   [
-    "02",
     "Technical leadership",
     "Setting direction, reviewing work, and bringing developers up to speed.",
   ],
-  [
-    "03",
-    "Systems thinking",
-    "Clear architecture for workflows that need to last.",
-  ],
-  ["04", "End-to-end ownership", "From first diagram to production support."],
-  ["05", "Useful AI", "Practical AI integrations that make the work better."],
+  ["Systems thinking", "Clear architecture for workflows that need to last."],
+  ["End-to-end ownership", "From first diagram to production support."],
+  ["Useful AI", "Practical AI integrations that make the work better."],
 ];
 
+const oldest = projects.reduce((a, b) =>
+  Number(a.year.slice(0, 4)) < Number(b.year.slice(0, 4)) ? a : b,
+);
+
 export default function Page() {
+  const longestRun = yearsInService(oldest.year);
+
   return (
-    <main>
-      <header className="site-header">
-        <Link href="/" className="brand">
-          KP<span>.</span>
-        </Link>
-        <nav aria-label="Primary navigation">
-          <a href="#work">Work</a>
-          <a href="#skills">Skills</a>
-          <a href="mailto:kevin.pallado97@gmail.com">Contact</a>
-        </nav>
-      </header>
+    <div className="rack">
+      <SiteHeader />
 
-      <section className="hero section-shell" aria-labelledby="hero-title">
-        <div className="hero-meta">
-          <span className="status-dot" /> Available for select projects · 2026
-        </div>
-        <h1 id="hero-title">
-          Building <em>systems</em>
-          <br />
-          that run real{" "}
-          <HeroCarry word="businesses." />
-        </h1>
-        <div className="hero-footer">
-          <p>
-            Kevin Ren B. Pallado
-            <br />
-            <span>Fullstack developer · systems builder</span>
-          </p>
-          <a href="#about" className="text-link">
-            Scroll to explore <ArrowDown size={16} />
-          </a>
-        </div>
-      </section>
-
-      <section id="about" className="section-shell opening-section">
-        <Reveal>
-          <p className="eyebrow">A little context</p>
-          <h2>
-            A developer who owns
-            <br />
-            <em>the whole system.</em>
-          </h2>
-          <p className="lede">
-            {
-              "I build the layers that make products work. I design and build the systems underneath the interface data models, APIs, business logic, integrations, workflows, and the product itself."
-            }
-          </p>
-          <IndustryRotator items={industries} />
-        </Reveal>
-      </section>
-
-      <section
-        className="section-shell offer-section"
-        aria-labelledby="offer-title"
-      >
-        <Reveal>
-          <div className="section-marker">
-            <span>01</span>
-            <span>How I help</span>
+      <main>
+        <section className="unit bay-unit" aria-labelledby="bay-title">
+          <div className="bay-head">
+            <div>
+              <h1 id="bay-title">{site.fullName}</h1>
+              <p className="role">{site.role}</p>
+            </div>
+            <p className="bay-claim">
+              A screenshot shows you a surface. This shows you what is wired to
+              what — the data models, APIs, and integrations underneath{" "}
+              {projects.length} systems, the oldest of them running{" "}
+              {longestRun} years.
+            </p>
           </div>
-          <h2 id="offer-title">
-            Less handoff.
-            <br />
-            <em>More ownership.</em>
-          </h2>
-        </Reveal>
-        <div className="offer-list">
-          {offers.map(([number, title, text], index) => (
-            <Reveal key={number}>
-              <div className="offer-row">
-                <span className="eyebrow">{number}</span>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
+          <PatchBay email={site.email} />
+        </section>
 
-      <section
-        id="work"
-        className="section-shell work-section"
-        aria-labelledby="work-title"
-      >
-        <Reveal>
-          <div className="section-marker">
-            <span>02</span>
-            <span>Selected work</span>
-          </div>
-          <div className="heading-row">
-            <h2 id="work-title">
-              Built, contributed to,
-              <br />
-              <em>and shipped.</em>
-            </h2>
-            <Link href="/projects" className="button-link">
-              View all projects <ArrowUpRight size={16} />
-            </Link>
-          </div>
-        </Reveal>
-        <ProjectCard project={featuredProject} />
-        <div className="mini-projects">
-          {projects.slice(1, 3).map((project, index) => (
-            <Link
-              key={project.slug}
-              href={`/projects/${project.slug}`}
-              className="mini-project"
-            >
-              <span>{String(index + 2).padStart(2, "0")}</span>
-              <strong>{project.name}</strong>
-              <span>{project.year}</span>
-              <ArrowUpRight size={16} />
-            </Link>
-          ))}
-        </div>
-      </section>
+        <section className="unit" aria-labelledby="owns-title">
+          <Reveal>
+            <div className="unit-head">
+              <p className="designation">
+                <b>What I own</b>
+                <span>Less handoff</span>
+              </p>
+              <h2 className="legend" id="owns-title">
+                I take the part of the product that has to keep working.
+              </h2>
+            </div>
+          </Reveal>
+          <Reveal delay={80}>
+            <dl className="owns mt-block">
+              {owns.map(([title, text]) => (
+                <div className="own" key={title}>
+                  <dt>{title}</dt>
+                  <dd>{text}</dd>
+                </div>
+              ))}
+            </dl>
+          </Reveal>
+        </section>
 
-      <section
-        id="skills"
-        className="section-shell skills-section"
-        aria-labelledby="skills-title"
-      >
-        <Reveal>
-          <div className="section-marker">
-            <span>03</span>
-            <span>Tools of the trade</span>
-          </div>
-          <h2 id="skills-title">
-            Comfortable across
-            <br />
-            <em>the stack.</em>
-          </h2>
-          <div className="skill-cloud">
-            {skills.map((skill) => (
-              <span key={skill}>{skill}</span>
+        <section className="unit" id="work" aria-labelledby="record-title">
+          <Reveal>
+            <div className="unit-head">
+              <p className="designation">
+                <b>Service record</b>
+                <span>
+                  {projects.length} systems · {industries.length} industries
+                </span>
+              </p>
+              <h2 className="legend" id="record-title">
+                Built, contributed to, and still running.
+              </h2>
+            </div>
+          </Reveal>
+          <div className="record mt-tight">
+            {projects.map((project) => (
+              <Reveal key={project.slug}>
+                <article className="entry">
+                  <div>
+                    <div className="entry-head">
+                      <h3>{project.name}</h3>
+                      <span className="years">{project.year}</span>
+                    </div>
+                    <p className="one-liner">{project.oneLiner}</p>
+                    <Link
+                      href={`/projects/${project.slug}`}
+                      className="entry-link"
+                    >
+                      Open record <ArrowUpRight size={14} aria-hidden="true" />
+                    </Link>
+                  </div>
+                  <div className="entry-spec">
+                    <span className="role">{project.role}</span>
+                    <span>{project.stack.join(" · ")}</span>
+                    {project.unverified ? (
+                      <span className="provisional">Unverified</span>
+                    ) : null}
+                    {project.scale ? (
+                      <span className="scale-lead">
+                        <b>{project.scale.value}</b>
+                        <em>{project.scale.label}</em>
+                      </span>
+                    ) : null}
+                  </div>
+                  <figure className="monitor">
+                    <Image
+                      src={project.image}
+                      alt={project.imageAlt}
+                      width={720}
+                      height={450}
+                      sizes="(max-width: 820px) 340px, 350px"
+                    />
+                    <figcaption>{project.name} in production</figcaption>
+                  </figure>
+                </article>
+              </Reveal>
             ))}
           </div>
-        </Reveal>
-      </section>
+        </section>
 
-      <section
-        className="section-shell cta-section"
-        aria-labelledby="cta-title"
-      >
-        <Reveal>
-          <p className="eyebrow">04 · Open to what&apos;s next</p>
-          <h2 id="cta-title">
-            Have a real problem
-            <br />
-            <em>worth solving?</em>
-          </h2>
-          <a className="cta-link" href="mailto:kevin.pallado97@gmail.com">
-            Let&apos;s talk <ArrowUpRight size={20} />
-          </a>
-          <div className="cta-bottom">
-            <Image
-              src="/profile.jpeg"
-              alt="Kevin Ren B. Pallado"
-              width={56}
-              height={56}
-              className="avatar"
-            />
-            <p>
-              Cagayan de Oro, PH
-              <br />
-              <span>UTC+8 · Open to remote</span>
-            </p>
-            <a href="mailto:kevin.pallado97@gmail.com" className="text-link">
-              kevin.pallado97@gmail.com
-            </a>
-          </div>
-        </Reveal>
-      </section>
+        <section className="unit" id="stack" aria-labelledby="patch-title">
+          <Reveal>
+            <div className="unit-head">
+              <p className="designation">
+                <b>Patch list</b>
+                <span>
+                  {services.length} wired · {skills.length} in hand
+                </span>
+              </p>
+              <h2 className="legend-sm" id="patch-title">
+                Comfortable across the stack, and across the industries that
+                use it.
+              </h2>
+            </div>
+          </Reveal>
+          <Reveal delay={80}>
+            <div className="patch-unit panel">
+            <ul className="patch-list">
+              {skills.map((skill) => (
+                <li key={skill}>
+                  <i aria-hidden="true" />
+                  {skill}
+                </li>
+              ))}
+            </ul>
+            <ul className="fields">
+              {industries.map((industry) => (
+                <li key={industry}>{industry}</li>
+              ))}
+            </ul>
+            </div>
+          </Reveal>
+        </section>
+
+        <section className="unit" id="contact" aria-labelledby="contact-title">
+          <Reveal>
+            <div className="contact panel">
+              <div>
+                <p className="designation">
+                  <b>Open line</b>
+                  <span>One jack free</span>
+                </p>
+                <h2 id="contact-title">
+                  Have a system that has to keep working?
+                </h2>
+                <p className="lede">
+                  Open to senior and lead roles, and to select projects, through
+                  2026. Based in {site.location}, working remote.
+                </p>
+                <a className="contact-cta" href={`mailto:${site.email}`}>
+                  {site.email}
+                  <ArrowUpRight size={22} aria-hidden="true" />
+                </a>
+              </div>
+              <div className="operator">
+                <Image
+                  src="/profile.jpeg"
+                  alt={site.fullName}
+                  width={54}
+                  height={54}
+                />
+                <p>
+                  <b>{site.name}</b>
+                  Cagayan de Oro, PH
+                  <br />
+                  UTC+8 · Open to remote
+                </p>
+              </div>
+            </div>
+          </Reveal>
+        </section>
+      </main>
 
       <footer className="site-footer">
-        <span>© 2026 Kevin Pallado</span>
-        <span>Made with intention.</span>
+        <span>© 2026 {site.name}</span>
+        <a href={`mailto:${site.email}`}>
+          Start a conversation <ArrowUpRight size={14} aria-hidden="true" />
+        </a>
       </footer>
-    </main>
+    </div>
   );
 }
