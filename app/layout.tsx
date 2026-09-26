@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Archivo } from 'next/font/google'
+import { skills } from '@/data/projects'
 import { site } from '@/lib/site'
 import './globals.css'
 
@@ -77,6 +78,8 @@ const personSchema = {
   url: site.url,
   email: `mailto:${site.email}`,
   jobTitle: 'Fullstack Developer',
+  image: `${site.url}/profile.jpeg`,
+  knowsAbout: skills,
   address: { '@type': 'PostalAddress', addressLocality: 'Cagayan de Oro', addressCountry: 'PH' },
   description: site.description,
 }

@@ -30,20 +30,11 @@ export async function generateMetadata({
       title,
       description: project.description,
       url: `/projects/${project.slug}`,
-      images: [
-        {
-          url: project.image,
-          width: 1600,
-          height: 1000,
-          alt: project.imageAlt,
-        },
-      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description: project.description,
-      images: [project.image],
     },
   };
 }
