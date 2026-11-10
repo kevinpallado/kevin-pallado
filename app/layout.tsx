@@ -18,7 +18,7 @@ const archivo = Archivo({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.fullName} — Fullstack Developer`,
+    default: `${site.fullName} — Freelance Software Developer`,
     // Pages set only their own name: "Racketa — Kevin Pallado".
     template: `%s — ${site.name}`,
   },
@@ -30,8 +30,10 @@ export const metadata: Metadata = {
   keywords: [
     'Kevin Pallado',
     'Kevin Ren B. Pallado',
+    'freelance software developer',
+    'custom business software',
+    'business process automation',
     'fullstack developer',
-    'systems builder',
     'Laravel developer',
     'SvelteKit developer',
     'React developer',
@@ -44,14 +46,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: `${site.fullName} — Portfolio`,
-    title: `${site.fullName} — Fullstack Developer`,
+    title: `${site.fullName} — Freelance Software Developer`,
     description: site.description,
     url: '/',
     locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
-    title: `${site.fullName} — Fullstack Developer`,
+    title: `${site.fullName} — Freelance Software Developer`,
     description: site.description,
   },
   robots: {
@@ -63,7 +65,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   colorScheme: 'light',
-  themeColor: '#dde0da',
+  themeColor: '#cbd0c4',
   width: 'device-width',
   initialScale: 1,
 }
@@ -77,7 +79,7 @@ const personSchema = {
   alternateName: site.name,
   url: site.url,
   email: `mailto:${site.email}`,
-  jobTitle: 'Fullstack Developer',
+  jobTitle: 'Freelance Software Developer',
   image: `${site.url}/profile.jpeg`,
   knowsAbout: skills,
   address: { '@type': 'PostalAddress', addressLocality: 'Cagayan de Oro', addressCountry: 'PH' },

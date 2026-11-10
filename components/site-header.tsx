@@ -16,8 +16,8 @@ export function SiteHeader({ back }: { back?: { href: string; label: string } })
         </Link>
       ) : (
         <nav aria-label="Primary">
-          <a href="#work">Work</a>
-          <a href="#stack">Stack</a>
+          <a href="#solutions">Solutions</a>
+          <a href="#ways">Ways to work</a>
           <a href="#contact">Contact</a>
         </nav>
       )}

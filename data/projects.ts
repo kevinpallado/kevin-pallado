@@ -10,9 +10,9 @@ export type Project = {
   stack: string[];
   url?: string;
   /**
-   * Year and stack are Kevin's own unconfirmed recollection. The patch bay
-   * draws these lines at half weight and dashed, so the page never asserts
-   * what has not been verified. Clear the flag once the facts are checked.
+   * Year and stack are Kevin's own unconfirmed recollection. Pages mark the
+   * record as unverified so they never assert what has not been checked.
+   * Clear the flag once the facts are confirmed.
    */
   unverified?: boolean;
   /**
@@ -20,6 +20,11 @@ export type Project = {
    * invent one: an absent reading renders as an absent reading.
    */
   scale?: { value: string; label: string };
+  /**
+   * The operating cost this system takes off a client's books, framed as
+   * what it removes. Never a savings figure: no data supports one.
+   */
+  solution: { industry: string; cost: string; fix: string };
 };
 
 export const projects: Project[] = [
@@ -36,7 +41,12 @@ export const projects: Project[] = [
     imageAlt: "LondonFoster dashboard",
     stack: ["Laravel", "MySQL", "JavaScript", "AWS"],
     url: "https://office.londonfoster.org",
-    scale: { value: "1,300+", label: "agents on the platform" },
+    scale: { value: "1,500+", label: "agents on the platform" },
+    solution: {
+      industry: "Real estate",
+      cost: "A subscription for every agent, for every tool.",
+      fix: "Instead of paying per seat for separate transaction, listing, and back-office software, the brokerage runs on one platform it owns — a single office system serving 1,500+ agents.",
+    },
   },
   {
     slug: "racketa",
@@ -51,6 +61,11 @@ export const projects: Project[] = [
     imageAlt: "Racketa home screen",
     stack: ["SvelteKit", "Laravel", "PostgreSQL", "Tailwind CSS"],
     url: "https://racketa.app",
+    solution: {
+      industry: "Racket sports",
+      cost: "Bookings, entries, and payments spread across apps.",
+      fix: "Clubs, tournaments, courts, and coaching on one platform: court owners take online and walk-in bookings, and organisers run entries, payments, and brackets in one place.",
+    },
   },
   {
     slug: "quansys",
@@ -65,6 +80,11 @@ export const projects: Project[] = [
     imageAlt: "Quansys sales dashboard",
     stack: ["Laravel", "PHP", "MariaDB", "NGINX"],
     url: "https://quansys.apexfuelstation.com",
+    solution: {
+      industry: "Fuel retail · accounting",
+      cost: "The same numbers typed in twice.",
+      fix: "Purchase orders, receivables, reconciliation, and daily operations in one system of record for a family-run station — instead of spreadsheets re-keyed and checked against each other.",
+    },
   },
   {
     slug: "grantable",
@@ -78,6 +98,11 @@ export const projects: Project[] = [
     image: "/projects/grantable-dashboard.png",
     imageAlt: "Grantable project preview",
     stack: ["Node.js", "Stripe", "Claude API", "OpenAI"],
+    solution: {
+      industry: "AI software",
+      cost: "Billing that fails quietly.",
+      fix: "Stripe webhooks built idempotent, so a retried event never charges or credits a customer twice — and nobody has to untangle it by hand later.",
+    },
   },
   {
     slug: "basc-eportal",
@@ -92,6 +117,11 @@ export const projects: Project[] = [
     imageAlt: "BaSC ePortal enrollment system",
     stack: ["Laravel", "PHP", "MySQL"],
     url: "https://bsc.iclique.online",
+    solution: {
+      industry: "Education",
+      cost: "Enrollment handled one paper form at a time.",
+      fix: "Freshman and transferee applications taken online, with student accounts and staff screens to review and enroll each applicant in the same system.",
+    },
   },
   {
     slug: "landers",
@@ -106,6 +136,11 @@ export const projects: Project[] = [
     imageAlt: "Landers Superstore online store",
     stack: ["JavaScript", "REST APIs", "Microservices", "AWS CDK"],
     url: "https://www.landers.ph",
+    solution: {
+      industry: "Retail · ecommerce",
+      cost: "Sales that only happen in the aisle.",
+      fix: "Online grocery ordering for a membership superstore chain — browsing, cart, and checkout, plus the integrations that carry each order through.",
+    },
   },
   {
     slug: "zenmarinecharter",
@@ -120,6 +155,11 @@ export const projects: Project[] = [
     imageAlt: "Zen Marine Charter booking site",
     stack: ["Next.js", "TypeScript", "PostgreSQL", "GoHighLevel"],
     url: "https://www.zenmarinecharter.com",
+    solution: {
+      industry: "Hospitality · charter",
+      cost: "Bookings chased by hand.",
+      fix: "Dates sync to the calendars on both sides, contracts are handled in the same flow, and every enquiry lands in GoHighLevel for follow-up without anyone copying it across.",
+    },
   },
   {
     slug: "zenintent",
@@ -134,6 +174,11 @@ export const projects: Project[] = [
     imageAlt: "Zen Intent lead targeting screen",
     stack: ["Next.js", "TypeScript", "PostgreSQL"],
     url: "https://www.zenintent.io",
+    solution: {
+      industry: "B2B lead generation",
+      cost: "Prospect research done by hand.",
+      fix: "AI gathers prospects and verifies each one before it reaches the list, so nobody spends their week scraping sites.",
+    },
   },
 ];
 
@@ -164,38 +209,6 @@ export const skills = [
   "Docker",
   "DevOps",
 ];
-
-export const featuredProject = projects[0];
-
-/** A jack's id has to survive being put in an SVG id and a CSS selector. */
-export function jackId(label: string) {
-  return label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-}
-
-/**
- * The service row of the bay, in the order the ports are wired. Derived from
- * the projects themselves so a jack can never exist without a system behind
- * it — the bay is the real graph, not a decorative one.
- */
-export const services: { id: string; label: string; systems: string[] }[] =
-  (() => {
-    const order: string[] = [];
-    const bySystem = new Map<string, string[]>();
-    for (const project of projects) {
-      for (const item of project.stack) {
-        if (!bySystem.has(item)) {
-          bySystem.set(item, []);
-          order.push(item);
-        }
-        bySystem.get(item)!.push(project.slug);
-      }
-    }
-    return order.map((label) => ({
-      id: jackId(label),
-      label,
-      systems: bySystem.get(label)!,
-    }));
-  })();
 
 /**
  * Elapsed years a system has been running, for the IN SERVICE meter. Counted

@@ -1,10 +1,10 @@
 <svg width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
   <style>
-    .plate { fill: #1e2022; }
-    .mark { fill: #eef0ec; }
-    .ring { fill: #121415; stroke: #b08d3f; stroke-width: 7; }
+    .plate { fill: #ede4d3; }
+    .mark { fill: #1d1f1b; }
+    .ring { fill: #2a2421; stroke: #7b1e2e; stroke-width: 7; }
     @media (prefers-color-scheme: dark) {
-      .plate { fill: #dde0da; }
+      .plate { fill: #cbd0c4; }
       .mark { fill: #16181a; }
     }
   </style>
@@ -20,6 +20,6 @@
     font-weight="700"
     letter-spacing="-6"
   >KP</text>
-  <!-- A port, not a dot: brass ferrule around a dark barrel, as on the bay. -->
+  <!-- A port, not a dot: burgundy ferrule around a dark barrel. -->
   <circle class="ring" cx="139" cy="120" r="15" />
 </svg>

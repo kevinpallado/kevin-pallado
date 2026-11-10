@@ -80,10 +80,6 @@ export default async function ProjectDetail({
                   <span>Running</span>
                 </span>
               ) : null}
-              <span className="meter">
-                <b>{project.stack.length}</b>
-                <span>Lines patched</span>
-              </span>
               {project.scale ? (
                 <span className="meter">
                   <b>{project.scale.value}</b>
@@ -96,7 +92,7 @@ export default async function ProjectDetail({
 
             {project.unverified ? (
               <p className="notice">
-                The dates and stack below are from memory and have not been
+                The dates on this record are from memory and have not been
                 verified yet.
               </p>
             ) : null}
@@ -117,6 +113,11 @@ export default async function ProjectDetail({
               </figure>
               <h2>The brief</h2>
               <p>{project.description}</p>
+              <h2>What it replaced</h2>
+              <p>
+                <b className="detail-cost">{project.solution.cost}</b>{" "}
+                {project.solution.fix}
+              </p>
               <div className="detail-links">
                 {project.url ? (
                   <a
@@ -133,17 +134,6 @@ export default async function ProjectDetail({
                   <ArrowLeft size={14} aria-hidden="true" /> All systems
                 </Link>
               </div>
-            </div>
-            <div>
-              <h2>Patched to</h2>
-              <ul className="detail-stack">
-                {project.stack.map((item) => (
-                  <li key={item}>
-                    <i aria-hidden="true" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
             </div>
           </div>
         </article>

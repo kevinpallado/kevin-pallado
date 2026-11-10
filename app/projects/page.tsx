@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 export default function ProjectsPage() {
   return (
     <div className="rack">
-      <SiteHeader back={{ href: "/", label: "Back to the bay" }} />
+      <SiteHeader back={{ href: "/", label: "Home" }} />
 
       <main>
         <section className="page-head" aria-labelledby="projects-title">
@@ -65,7 +65,6 @@ export default function ProjectsPage() {
                   </div>
                   <div className="entry-spec">
                     <span className="role">{project.role}</span>
-                    <span>{project.stack.join(" · ")}</span>
                     {project.unverified ? (
                       <span className="provisional">Unverified</span>
                     ) : null}

@@ -18,9 +18,9 @@ export const site = {
   url: resolveUrl(),
   name: 'Kevin Pallado',
   fullName: 'Kevin Ren B. Pallado',
-  role: 'Fullstack developer · systems builder',
+  role: 'Freelance software developer',
   email: 'kevin.pallado97@gmail.com',
   location: 'Cagayan de Oro, Philippines',
   description:
-    'Fullstack developer building the systems that run real businesses — data models, APIs, business logic, integrations, and the workflows underneath the interface.',
+    'Freelance software developer building systems that cut what it costs to run a business — replacing re-keying, hand-offs, and disconnected tools with software that does the work, then keeping it running.',
 } as const

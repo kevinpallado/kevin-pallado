@@ -18,7 +18,7 @@ The job all three are doing is the same: deciding, in one visit, whether Kevin i
 
 ## Product Purpose
 
-A personal portfolio for Kevin Ren B. Pallado that establishes him as a senior fullstack developer and systems builder who owns whole systems rather than assigned tickets.
+A personal portfolio for Kevin Ren B. Pallado that establishes him as a freelance software developer who owns whole systems rather than assigned tickets.
 
 Success is **credibility for a role conversation**: the visitor finishes the site taking him seriously as a senior/lead candidate or an ownership-level contractor. The site frequently backs an application, referral, or introduction that is already in motion — it is a proof-of-work reference more than a cold conversion funnel. Contact is by email (`kevin.pallado97@gmail.com`); there is no form, no scheduler, and no lead capture.
 
@@ -31,7 +31,7 @@ What a neighboring portfolio could not truthfully copy: production systems that 
 ## Operating Context
 
 - Kevin works from Cagayan de Oro, Philippines (UTC+8) and is open to remote engagements.
-- Current posture is **both**: genuinely open to full-time senior/lead roles *and* to select contract projects. The site must not force a choice between the two, and neither framing may crowd the other out.
+- Current posture is **freelance-first** (changed 2026-11-10 at Kevin's request): the site leads with the offer to direct clients — software that cuts what it costs to run their business by replacing re-keying, hand-offs, and disconnected tools. Freelance work is offered two ways: taking over a client's software infrastructure and workflows end to end, or joining their existing team as a senior developer. Proof under each is derived from the recorded `role`. Senior/lead role language has been removed from the home page; the technical evidence (stack, roles, service record) still serves hiring managers and recruiters who arrive anyway.
 - The site is read on desktop and phone, often in a short skim between other tabs, and frequently reached from a link someone else shared.
 - Roles held across the portfolio span solo build, full ownership, project lead, co-founder, and contributor — the distinction is real and is recorded per project.
 
@@ -43,13 +43,13 @@ What a neighboring portfolio could not truthfully copy: production systems that 
 - Site URL resolves from `NEXT_PUBLIC_SITE_URL`, else `VERCEL_PROJECT_PRODUCTION_URL`, else localhost — never hardcode a domain.
 - Project screenshots live in `public/projects/` as PNG dashboard captures; `public/profile.jpeg` is the only photograph of Kevin.
 - `viewport.colorScheme` is currently `light` only; there is no dark mode.
-- Terminology: "systems builder" and "fullstack developer" are the self-description in use. Per-project `role` strings ("Full ownership", "Project Lead", "Co-founder · Contributor", "Contributor", "Built solo") are factual and must not be inflated.
+- Terminology: "freelance software developer" is the self-description in use (2026-11-10: "systems builder" dropped at Kevin's request). Per-project `role` strings ("Full ownership", "Project Lead", "Co-founder · Contributor", "Contributor", "Built solo") are factual and must not be inflated.
 - **Verification:** the year and stack fields on BaSC ePortal, Landers Superstore, Zen Marine Charter, and Zen Intent have been confirmed by Kevin (2026-09-26). Any new project whose facts are unconfirmed must set `unverified: true` in `data/projects.ts` until they are checked.
 
 ## Brand Commitments
 
 - Name: **Kevin Ren B. Pallado**, shortened to **Kevin Pallado**. The brand mark is the wordmark **KP.** — the period is part of it.
-- Stated role line: "Fullstack developer · systems builder".
+- Stated role line: "Freelance software developer".
 - Voice is plain, direct, and understated. Claims are specific and verifiable; the writing avoids salesmanship and superlatives. Existing copy ("Less handoff. More ownership.", "Have a real problem worth solving?", "Made with intention.") is the register to match.
 - Contact is email only: `kevin.pallado97@gmail.com`.
 
@@ -68,7 +68,7 @@ Absences that must never be invented: there are **no testimonials, no client quo
 
 1. **Ownership is the claim.** Every surface should make visible that Kevin designs and runs whole systems, not that he is available for tasks.
 2. **Specific beats impressive.** Real project names, real years, real stacks, real roles. A verifiable detail outranks a confident adjective — and an unverified field stays unverified.
-3. **Both doors stay open.** Role-seeking and project-seeking visitors must both find their path; neither posture may be designed out of the site.
+3. **Lead with the client's cost, prove it with a running system.** Every cost-cutting claim names the production project that demonstrates it. Cost savings are described as what the system removes, never as a percentage or figure no data supports.
 4. **A skim must still land.** A recruiter reading for thirty seconds and a CTO reading for five minutes should both leave with the same correct impression.
 5. **Range proves the skill.** Eight industries is the argument. Work that flattens the portfolio into one vertical weakens the positioning.
 

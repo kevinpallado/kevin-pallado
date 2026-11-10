@@ -7,11 +7,11 @@ export const alt = `A system by ${site.fullName}`
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-const PANEL = '#1e2022'
-const BRASS = '#b08d3f'
-const CORD = '#c0392b'
-const ON_PANEL = '#eef0ec'
-const ON_PANEL_SOFT = '#a6aeac'
+const PANEL = '#ede4d3'
+const BRASS = '#7b1e2e'
+const CORD = '#8e2335'
+const ON_PANEL = '#1d1f1b'
+const ON_PANEL_SOFT = '#514b42'
 
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }))
@@ -60,24 +60,11 @@ export default async function Image({ params }: { params: Promise<{ slug: string
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 26 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
-            <div style={{ width: 16, height: 16, borderRadius: 999, background: '#121415', border: '3px solid #dcb864' }} />
+            <div style={{ width: 16, height: 16, borderRadius: 999, background: '#2a2421', border: '3px solid #7b1e2e' }} />
             <div style={{ width: 40, height: 4, background: CORD, borderRadius: 2 }} />
-            {project.stack.map((item) => (
-              <div
-                key={item}
-                style={{
-                  display: 'flex',
-                  fontSize: 21,
-                  letterSpacing: 2,
-                  padding: '6px 14px',
-                  border: '2px solid #6d5a2e',
-                  borderRadius: 4,
-                  color: ON_PANEL,
-                }}
-              >
-                {item.toUpperCase()}
-              </div>
-            ))}
+            <div style={{ display: 'flex', fontSize: 21, letterSpacing: 2, color: ON_PANEL }}>
+              {project.solution.industry.toUpperCase()}
+            </div>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', fontSize: 25 }}>
             <div style={{ display: 'flex' }}>{site.fullName}</div>
