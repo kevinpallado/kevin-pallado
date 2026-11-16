@@ -1138,6 +1138,54 @@ img {
 .detail-grid p + h2 {
   margin-top: clamp(28px, 3.4vw, 40px);
 }
+/* Before-and-after pairs: what each system took the place of. */
+.replaced {
+  margin-top: clamp(20px, 2.6vw, 28px);
+  border-top: 1px solid var(--rule);
+}
+.replaced li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 6px 18px;
+  align-items: start;
+  padding-block: 16px;
+  border-bottom: 1px solid var(--rule);
+  font-size: clamp(0.95rem, 1.2vw, 1.02rem);
+  line-height: 1.5;
+}
+.replaced small {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 10px;
+  font-weight: 650;
+  font-stretch: 78%;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.replaced-was {
+  color: var(--ink-faint);
+}
+.replaced-now {
+  color: var(--ink);
+}
+.replaced-now small {
+  color: var(--brass);
+}
+.replaced-arrow {
+  margin-top: 22px;
+  color: var(--brass);
+}
+@media (max-width: 640px) {
+  .replaced li {
+    grid-template-columns: 1fr;
+  }
+  .replaced-arrow {
+    margin-top: 0;
+    transform: rotate(90deg);
+  }
+}
+
 .detail-links {
   display: flex;
   flex-wrap: wrap;

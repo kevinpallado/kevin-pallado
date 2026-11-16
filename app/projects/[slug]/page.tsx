@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { projects, yearsInService } from "@/data/projects";
 import { SiteHeader } from "@/components/site-header";
 import { site } from "@/lib/site";
@@ -118,6 +118,25 @@ export default async function ProjectDetail({
                 <b className="detail-cost">{project.solution.cost}</b>{" "}
                 {project.solution.fix}
               </p>
+              <ul className="replaced">
+                {project.replaced.map((item) => (
+                  <li key={item.was}>
+                    <span className="replaced-was">
+                      <small>Was</small>
+                      {item.was}
+                    </span>
+                    <ArrowRight
+                      className="replaced-arrow"
+                      size={16}
+                      aria-hidden="true"
+                    />
+                    <span className="replaced-now">
+                      <small>Now</small>
+                      {item.now}
+                    </span>
+                  </li>
+                ))}
+              </ul>
               <div className="detail-links">
                 {project.url ? (
                   <a

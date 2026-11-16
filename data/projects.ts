@@ -25,7 +25,14 @@ export type Project = {
    * what it removes. Never a savings figure: no data supports one.
    */
   solution: { industry: string; cost: string; fix: string };
+  /**
+   * What the system took the place of, as before-and-after pairs. At least
+   * three, each one traceable to the cost and fix above — no invented detail.
+   */
+  replaced: [Replacement, Replacement, Replacement, ...Replacement[]];
 };
+
+export type Replacement = { was: string; now: string };
 
 export const projects: Project[] = [
   {
@@ -47,6 +54,20 @@ export const projects: Project[] = [
       cost: "A subscription for every agent, for every tool.",
       fix: "Instead of paying per seat for separate transaction, listing, and back-office software, the brokerage runs on one platform it owns — a single office system serving 1,500+ agents.",
     },
+    replaced: [
+      {
+        was: "A per-agent subscription for transaction software",
+        now: "Transactions run in the brokerage's own office system",
+      },
+      {
+        was: "A separate paid tool for property listings",
+        now: "Listings managed on the same platform",
+      },
+      {
+        was: "Back-office software licensed seat by seat",
+        now: "One back office for agents, administrators, and operations — owned outright",
+      },
+    ],
   },
   {
     slug: "racketa",
@@ -66,6 +87,28 @@ export const projects: Project[] = [
       cost: "Bookings, entries, and payments spread across apps.",
       fix: "Clubs, tournaments, courts, and coaching on one platform: court owners take online and walk-in bookings, and organisers run entries, payments, and brackets in one place.",
     },
+    replaced: [
+      {
+        was: "Games that count for nothing once they are over",
+        now: "Every queue and tournament game earns rating, so players climb the ranks the way they would in a MOBA",
+      },
+      {
+        was: "Open-play rotations called by hand",
+        now: "Open-play queues kept fair by skill level or by number of games played",
+      },
+      {
+        was: "Registrations, payments, and brackets in separate tools",
+        now: "Tournaments run in one place, from registration to champion",
+      },
+      {
+        was: "Club admin and court bookings spread across apps",
+        now: "Club management, with online and walk-in bookings, on the same platform",
+      },
+      {
+        was: "Coaching arranged outside the club's system",
+        now: "Coaching sessions run alongside everything else",
+      },
+    ],
   },
   {
     slug: "quansys",
@@ -73,18 +116,40 @@ export const projects: Project[] = [
     year: "2019 — present",
     role: "Featured · Built solo",
     oneLiner:
-      "Accounting and purchase-order software running a full-service gasoline station.",
+      "Accounting, purchase-order, and inventory software running a multi-branch gasoline station.",
     description:
-      "A single source of truth for purchase orders, receivables, reconciliation, and daily operations at a family-operated station in Cagayan de Oro.",
+      "One process flow every branch follows — purchase orders, receivables, inventory, reconciliation, and daily operations — for a family-operated fuel business in Cagayan de Oro.",
     image: "/projects/apex-dashboard.png",
     imageAlt: "Quansys sales dashboard",
     stack: ["Laravel", "PHP", "MariaDB", "NGINX"],
     url: "https://quansys.apexfuelstation.com",
     solution: {
       industry: "Fuel retail · accounting",
-      cost: "The same numbers typed in twice.",
-      fix: "Purchase orders, receivables, reconciliation, and daily operations in one system of record for a family-run station — instead of spreadsheets re-keyed and checked against each other.",
+      cost: "Every branch with its own spreadsheet.",
+      fix: "One process flow every branch follows, so daily revenue, purchase-order, and inventory reports come out exact and comparable — instead of each branch running the day in its own Excel workbook and the numbers reconciled after the fact.",
     },
+    replaced: [
+      {
+        was: "Each branch keeping its own Excel workbooks",
+        now: "One system every branch enters into",
+      },
+      {
+        was: "A different day-to-day method at every branch",
+        now: "One process flow every branch follows",
+      },
+      {
+        was: "Daily revenue totalled from branch spreadsheets",
+        now: "A precise daily revenue report from the day's own entries",
+      },
+      {
+        was: "Purchase orders tracked in separate files",
+        now: "Purchase orders raised and tracked in one place",
+      },
+      {
+        was: "Inventory counted a different way at each branch",
+        now: "An inventory report built from the same records",
+      },
+    ],
   },
   {
     slug: "grantable",
@@ -103,6 +168,20 @@ export const projects: Project[] = [
       cost: "Billing that fails quietly.",
       fix: "Stripe webhooks built idempotent, so a retried event never charges or credits a customer twice — and nobody has to untangle it by hand later.",
     },
+    replaced: [
+      {
+        was: "A retried Stripe event able to charge or credit twice",
+        now: "Idempotent webhooks that apply each event once",
+      },
+      {
+        was: "Billing mistakes untangled by hand after the fact",
+        now: "Billing that stays consistent without manual cleanup",
+      },
+      {
+        was: "Grant drafts started from a blank page",
+        now: "Claude and OpenAI integrations behind the core writing features",
+      },
+    ],
   },
   {
     slug: "basc-eportal",
@@ -122,6 +201,20 @@ export const projects: Project[] = [
       cost: "Enrollment handled one paper form at a time.",
       fix: "Freshman and transferee applications taken online, with student accounts and staff screens to review and enroll each applicant in the same system.",
     },
+    replaced: [
+      {
+        was: "Paper application forms for freshmen and transferees",
+        now: "Online admissions for both",
+      },
+      {
+        was: "Student records kept apart from the application",
+        now: "Student accounts in the same system",
+      },
+      {
+        was: "Each applicant's form processed by hand",
+        now: "Staff screens to review and enroll every applicant",
+      },
+    ],
   },
   {
     slug: "landers",
@@ -141,6 +234,20 @@ export const projects: Project[] = [
       cost: "Sales that only happen in the aisle.",
       fix: "Online grocery ordering for a membership superstore chain — browsing, cart, and checkout, plus the integrations that carry each order through.",
     },
+    replaced: [
+      {
+        was: "Shopping only possible in the store",
+        now: "Online grocery ordering for members",
+      },
+      {
+        was: "Walking the aisles to see what is stocked",
+        now: "Product browsing online",
+      },
+      {
+        was: "Checkout only at the till",
+        now: "Online cart and checkout, with integrations carrying each order through",
+      },
+    ],
   },
   {
     slug: "zenmarinecharter",
@@ -160,6 +267,20 @@ export const projects: Project[] = [
       cost: "Bookings chased by hand.",
       fix: "Dates sync to the calendars on both sides, contracts are handled in the same flow, and every enquiry lands in GoHighLevel for follow-up without anyone copying it across.",
     },
+    replaced: [
+      {
+        was: "Charter dates entered into each calendar by hand",
+        now: "Dates synced to the calendars on both sides",
+      },
+      {
+        was: "Contracts sent and chased separately",
+        now: "Contracts handled inside the booking flow",
+      },
+      {
+        was: "Enquiries copied into the CRM by hand",
+        now: "Every enquiry lands in GoHighLevel automatically",
+      },
+    ],
   },
   {
     slug: "zenintent",
@@ -179,6 +300,20 @@ export const projects: Project[] = [
       cost: "Prospect research done by hand.",
       fix: "AI gathers prospects and verifies each one before it reaches the list, so nobody spends their week scraping sites.",
     },
+    replaced: [
+      {
+        was: "Scraping sites for prospects by hand",
+        now: "AI gathers the prospects",
+      },
+      {
+        was: "Checking each prospect one at a time",
+        now: "Every prospect verified before it reaches the list",
+      },
+      {
+        was: "Cold lists with no reason to reach out",
+        now: "Leads targeted on each prospect's pain points",
+      },
+    ],
   },
 ];
 
